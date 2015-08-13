@@ -35,3 +35,4 @@ var maxProduct = function(nums) {
 
   return nums.slice(lowIndex, highIndex);
 };
+
