@@ -7,7 +7,7 @@ Write a function to find the longest common prefix string amongst an array of st
 
 
 var longestCommonPrefix = function(strings) {
-
+  
 
 };
 
