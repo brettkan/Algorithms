@@ -20,17 +20,16 @@ var checkCommonPrefix = function(str1, str2) {
 };
 
 var longestCommonPrefix = function(strings) {
-  var longest = '';
+  if (strings.length === 0) {
+    return '';
+  }  
 
-  for (var i = 0; i < strings.length; i++) {
-    for (var j = i + 1; j < strings.length; j++) {
-      var common = checkCommonPrefix(strings[i], strings[j]);
-      if (common.length > longest.length) {
-        longest = common;
-      }
-    }
+  if (strings.length === 1) {
+    return strings[0];
   }
 
-  return longest;
+  return strings.reduce(function(aggregator, iterator) {
+    return checkCommonPrefix(aggregator, iterator);
+  });
 };
 
