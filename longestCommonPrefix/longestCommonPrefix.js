@@ -24,12 +24,6 @@ var longestCommonPrefix = function(strings) {
     return '';
   }  
 
-  if (strings.length === 1) {
-    return strings[0];
-  }
-
-  return strings.reduce(function(aggregator, iterator) {
-    return checkCommonPrefix(aggregator, iterator);
-  });
+  return strings.reduce(checkCommonPrefix);
 };
 
