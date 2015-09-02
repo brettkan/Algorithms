@@ -6,15 +6,37 @@ For example:
 Given 1->2->3->4->5->NULL and k = 2,
 return 4->5->1->2->3->NULL.
 
+Definition for singly-linked list.
+function ListNode(val) {
+  this.val = val;
+  this.next = null;
+}; 
+
 */
 
-var rotateList = function(array, k) {
-  var oneCycleNum = k % array.length;
-  var numToAdd = oneCycleNum ? array.length - oneCycleNum : 0;
-  var result = array.slice();
+var rotateList = function(head, k) {
+  var totalNodes = 0;
+  for (var node = head; node; node = node.next) {
+    totalNodes++;
+  }
 
-  for (var i = 0; i < numToAdd; i++) {
-    result.push(result[i]);
+  k = k % totalNodes;
+  
+  var counter = 0;
+  var breakPoint = totalNodes - k;
+  for (var node = head; node; node = node.next) {
+    counter++;
+    if (counter === breakPoint) {
+      var storedNode = node.next;
+      node.next = null;
+      node = storedNode;
+      counter++;
+    } 
+
+    if (counter === totalNodes) {
+      node.next = head;
+      break;
+    }
   }
 
   return result.slice(numToAdd);
