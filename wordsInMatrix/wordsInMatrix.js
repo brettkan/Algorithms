@@ -31,14 +31,18 @@ var wordsInMatrix = function(dictionary, matrix) {
   var matrixRows = matrix[0].length;
   var result = {};
 
+  var lookupDictionary = function(str) {
+    if (str in dictionary) {
+      result[str] = true;
+    }
+  };
+
   var checkRight = function(startColumn, startRow) {
     var wordBuild = '';
 
     for (var i = startRow; i < matrixRows; i++) {
       wordBuild += matrix[startColumn][i];
-      if (wordBuild in dictionary) {
-        result[wordBuild] = true;
-      }
+      lookupDictionary(wordBuild);
     }
   };
 
@@ -47,9 +51,7 @@ var wordsInMatrix = function(dictionary, matrix) {
 
     for (var i = startRow; i >= 0; i--) {
       wordBuild += matrix[startColumn][i];
-      if (wordBuild in dictionary) {
-        result[wordBuild] = true;
-      }
+      lookupDictionary(wordBuild);
     }
   };
 
@@ -58,9 +60,7 @@ var wordsInMatrix = function(dictionary, matrix) {
 
     for (var i = startColumn; i < matrixColumns; i++) {
       wordBuild += matrix[i][startRow];
-      if (wordBuild in dictionary) {
-        result[wordBuild] = true;
-      }
+      lookupDictionary(wordBuild);
     }
   };
 
@@ -69,9 +69,47 @@ var wordsInMatrix = function(dictionary, matrix) {
 
     for (var i = startColumn; i >= 0; i--) {
       wordBuild += matrix[i][startRow];
-      if (wordBuild in dictionary) {
-        result[wordBuild] = true;
-      }
+      lookupDictionary(wordBuild);
+    }
+  };
+
+  var checkDownRight = function(startColumn, startRow) {
+    var wordBuild = '';
+    var remainingLetters = Math.min(matrixColumns - startColumn, matrixRows - startRow);
+
+    for (var i = 0; i < remainingLetters; i++) {
+      wordBuild += matrix[startColumn + i][startRow + i];
+      lookupDictionary(wordBuild);
+    }
+  };
+
+  var checkDownLeft = function(startColumn, startRow) {
+    var wordBuild = '';
+    var remainingLetters = Math.min(matrixColumns - startColumn, startRow + 1);
+
+    for (var i = 0; i < remainingLetters; i++) {
+      wordBuild += matrix[startColumn + i][startRow - i];
+      lookupDictionary(wordBuild);
+    }
+  };
+
+  var checkUpRight = function(startColumn, startRow) {
+    var wordBuild = '';
+    var remainingLetters = Math.min(startColumn + 1, matrixRows - startRow);
+
+    for (var i = 0; i < remainingLetters; i++) {
+      wordBuild += matrix[startColumn - i][startRow + i];
+      lookupDictionary(wordBuild);
+    }
+  };
+
+  var checkUpLeft = function(startColumn, startRow) {
+    var wordBuild = '';
+    var remainingLetters = Math.min(startColumn + 1, startRow + 1);
+
+    for (var i = 0; i < remainingLetters; i++) {
+      wordBuild += matrix[startColumn - i][startRow - i];
+      lookupDictionary(wordBuild);
     }
   };
 
@@ -81,6 +119,10 @@ var wordsInMatrix = function(dictionary, matrix) {
       checkLeft(i, j);
       checkDown(i, j);
       checkUp(i, j);
+      checkDownRight(i, j);
+      checkDownLeft(i, j);
+      checkUpRight(i, j);
+      checkUpLeft(i, j);
     }
   }
 
