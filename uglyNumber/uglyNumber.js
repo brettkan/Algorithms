@@ -10,5 +10,37 @@ Note that 1 is typically treated as an ugly number.
 */
 
 var nthUglyNumber = function(n) {
+  var uglyNumbers = [];
+  var counter = 1;
 
+  while (uglyNumbers.length < n) {
+    if (checkUglyNumber(counter)) {
+      uglyNumbers.push(counter);
+    }
+
+    counter++;
+  }
+
+  return uglyNumbers[uglyNumbers.length - 1];
 };
+
+var checkUglyNumber = function(n) {
+  if (n === 1) {
+    return true;
+  }
+
+  if (n % 2 === 0) {
+    return checkUglyNumber(n / 2);
+  }
+
+  if (n % 3 === 0) {
+    return checkUglyNumber(n / 3);
+  }
+
+  if (n % 5 === 0) {
+    return checkUglyNumber(n / 5);
+  }
+
+  return false;
+};
+
