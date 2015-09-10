@@ -18,5 +18,57 @@ If there is more than one mode, return any of the modes.
 */
 
 var TempTracker = function() {
+  this.maxTemp = null;
+  this.minTemp = null;
+  this.meanTemp = null;
+  this.modeTemp = null;
 
+  this.tempCount = 0;
+
+  this.tempStore = {};
+  this.modeCount = 0;
+};
+
+TempTracker.prototype.insert = function(temp) {
+  // Update max temp
+  if (temp > this.maxTemp || this.maxTemp === null) {
+    this.maxTemp = temp;
+  }
+
+  // Update min temp
+  if (temp < this.minTemp || this.minTemp === null) {
+    this.minTemp = temp;
+  }
+
+  // Update mean
+  if (this.meanTemp !== null) {
+    var tempProduct = this.tempCount * this.meanTemp;
+    this.meanTemp = (tempProduct + temp) / (this.tempCount + 1);
+  } else {
+    this.meanTemp = temp;
+  }
+  this.tempCount++;
+
+  // Update mode
+  this.tempStore[temp] = this.tempStore[temp] + 1 || 1;
+  if (this.tempStore[temp] > this.modeCount) {
+    this.modeTemp = temp;
+    this.modeCount = this.tempStore[temp];
+  }
+};
+
+TempTracker.prototype.getMax = function() {
+  return this.maxTemp;
+};
+
+TempTracker.prototype.getMin = function() {
+  return this.minTemp;
+};
+
+TempTracker.prototype.getMean = function() {
+  return this.meanTemp;
+};
+
+TempTracker.prototype.getMode = function() {
+  return this.modeTemp;
 };
