@@ -26,6 +26,15 @@ var Node = function(value) {
 };
 
 var reverseLinkedList = function(headNode) {
+  var prev = null;
+  var next;
 
+  for (var node = headNode; node; node = next) {
+    next = node.next;
+    node.next = prev;
+    prev = node;
+  }
+
+  return prev;
 };
 
