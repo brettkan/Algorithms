@@ -6,17 +6,17 @@ Your function will have one input: the head of the list.
 
 Your function should return the new head of the list.
 
-example: 
+  example: 
 
-var nodeA = new Node('A');
-var nodeB = new Node('B');
-var nodeC = new Node('C');
-var nodeD = new Node('D');
-nodeA.next = nodeB;
-nodeB.next = nodeC;
-nodeC.next = nodeD;
+  var nodeA = new Node('A');
+  var nodeB = new Node('B');
+  var nodeC = new Node('C');
+  var nodeD = new Node('D');
+  nodeA.next = nodeB;
+  nodeB.next = nodeC;
+  nodeC.next = nodeD;
 
-reverseLinkedList(nodeA); // should return nodeD
+  reverseLinkedList(nodeA); // should return nodeD
 
 */
 
