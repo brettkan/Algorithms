@@ -5,3 +5,4 @@ Repo for practice algorithms
 ## problems
 
 condensedRanges
+highestProductOfThree
