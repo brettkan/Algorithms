@@ -17,7 +17,72 @@ Use the Parameter Testing feature in the box below to test your code with differ
 */
 
 function CorrectPath(str) {
+    const gridWidth = 5
+    const gridHeight = 5
+    const indexToFind = str.indexOf('?')
+    const moves = ['u', 'r', 'd', 'l']
 
+    if (isValidPosition(str, gridWidth, gridHeight)) {
+        if (isGridComplete(str, gridWidth, gridHeight)) {
+            return str
+        }
+
+        if (indexToFind === -1) {
+            return false
+        }
+
+        for (let i = 0; i < moves.length; i++) {
+            const path = CorrectPath(str.replace('?', moves[i]))
+            if (path) {
+                return path
+            }
+        }
+    }
+
+    return false
+}
+
+function isValidPosition(str, gridWidth, gridHeight) {
+    const position = [0, 0]
+    for (let i = 0; i < str.length; i++) {
+        let currentLetter = str[i]
+        switch (currentLetter) {
+            case 'u':
+                position[1]--
+                break
+            case 'r':
+                position[0]++
+                break
+            case 'd':
+                position[1]++
+                break
+            case 'l':
+                position[0]--
+                break
+            default:
+                return true
+        }
+
+        if (
+          position[0] < 0 ||
+          position[0] >= gridWidth ||
+          position[1] < 0 ||
+          position[1] >= gridHeight
+        ) {
+            return false
+        }
+    }
+
+    return position
+}
+
+function isGridComplete(str, gridWidth, gridHeight) {
+    const finalPosition = isValidPosition(str)
+    return finalPosition &&
+        Array.isArray(finalPosition) &&
+        finalPosition[0] === gridWidth - 1 &&
+        finalPosition[1] === gridHeight - 1
 }
 
 console.log(CorrectPath('r?d?drdd'))
+console.log(CorrectPath('????????'))
