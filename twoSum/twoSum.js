@@ -18,7 +18,7 @@ var twoSum = function(nums, target) {
     var temp = target - nums[i];
     for (var j = i + 1; j < nums.length; j++) {
       if (nums[j] === temp) {
-        return [i + 1, j + 1];
+        return [i, j];
       }
     }
   }
