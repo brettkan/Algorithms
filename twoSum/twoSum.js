@@ -25,3 +25,19 @@ var twoSum = function(nums, target) {
 
   return null;
 };
+
+function twoSumHash(nums, target) {
+    const hash = nums.reduce((aggregate, num, index) => {
+        aggregate[num] = index
+        return aggregate
+    }, {})
+
+    for (let i = 0; i < nums.length; i++) {
+        let diff = target - nums[i]
+        if (hash.hasOwnProperty(diff) && i !== hash[diff]) {
+            return [i, hash[diff]]
+        }
+    }
+
+    return null
+}
