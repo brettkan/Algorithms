@@ -41,3 +41,18 @@ function twoSumHash(nums, target) {
 
     return null
 }
+
+function twoSumOnePassHash(nums, target) {
+    const hash = {}
+
+    for (const [index, num] of nums.entries()) {
+        let diff = target - num
+        if (hash.hasOwnProperty(diff)) {
+            return [hash[diff], index]
+        }
+
+        hash[num] = index
+    }
+
+    return null
+}
