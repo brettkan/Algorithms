@@ -25,6 +25,41 @@ Explanation: 342 + 465 = 807.
  * @param {ListNode} l2
  * @return {ListNode}
  */
+
+function addTwoNumbers(l1, l2) {
+    const firstVal = l1.val + l2.val
+    const resultNode = new ListNode(firstVal % 10)
+    let carry = Math.floor(firstVal / 10)
+
+    let currentNode1 = l1.next
+    let currentNode2 = l2.next
+    let currentResultNode = resultNode
+
+    while (currentNode1 || currentNode2 || carry) {
+        if (!currentNode1) {
+            currentNode1 = new ListNode(0)
+        }
+
+        if (!currentNode2) {
+            currentNode2 = new ListNode(0)
+        }
+
+        let nextVal = currentNode1.val + currentNode2.val + carry
+        carry = Math.floor(nextVal / 10)
+        currentResultNode.next = new ListNode(nextVal % 10)
+        currentResultNode = currentResultNode.next
+
+        currentNode1 = currentNode1.next
+        currentNode2 = currentNode2.next
+    }
+
+    return resultNode
+}
+
+/**
+The answer below sort of works, except does not handle the use case of large numbers w/ scientific notation
+
+
 var addTwoNumbers = function(l1, l2) {
     const sum = getNumberFromNode(l1) + getNumberFromNode(l2)
     const sumArr = sum.toString().split('').reverse().map(stringNum => {
@@ -46,6 +81,9 @@ function getStringNumberFromNode(node) {
 
     return getStringNumberFromNode(node.next) + node.val.toString()
 }
+*/
+
+// HELPERS
 
 function createListFromBackwardsArray(arr) {
     const forwardArr = arr.reverse()
@@ -59,23 +97,26 @@ function createListFromBackwardsArray(arr) {
     return resultNode
 }
 
-// function getNumberFromNodeIterative(node) {
-//     let stringNum = ''
-//     for (let current = node; current; current = current.next) {
-//         stringNum = current.val + stringNum
-//     }
-//     return Number(stringNum)
-// }
+function getNumberFromNodeIterative(node) {
+    let stringNum = ''
+    for (let current = node; current; current = current.next) {
+        stringNum = current.val + stringNum
+    }
+    return Number(stringNum)
+}
 
 function ListNode(val) {
     this.val = val;
     this.next = null;
 }
 
-// const nodeOne = createListFromBackwardsArray([2, 4, 3])
-// const nodeTwo = createListFromBackwardsArray([5, 6, 4])
 
-// console.log(addTwoNumbers(nodeOne, nodeTwo))
+// TEST CASES
+
+const nodeOne = createListFromBackwardsArray([2, 4, 3])
+const nodeTwo = createListFromBackwardsArray([5, 6, 4])
+
+console.log(addTwoNumbers(nodeOne, nodeTwo))
 
 const nodeThree = createListFromBackwardsArray([2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,9])
 const nodeFour = createListFromBackwardsArray([5,6,4,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,9,9,9,9])
