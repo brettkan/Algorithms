@@ -43,15 +43,15 @@ function twoSumHash(nums, target) {
 }
 
 function twoSumOnePassHash(nums, target) {
-    const hash = {}
+    const map = new Map()
 
     for (const [index, num] of nums.entries()) {
         let diff = target - num
-        if (hash.hasOwnProperty(diff)) {
-            return [hash[diff], index]
+        if (map.has(diff)) {
+            return [map.get(diff), index]
         }
 
-        hash[num] = index
+        map.set(num, index)
     }
 
     return null
