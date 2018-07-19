@@ -26,8 +26,28 @@ Explanation: 342 + 465 = 807.
  * @return {ListNode}
  */
 var addTwoNumbers = function(l1, l2) {
-    
+    return getNumberFromNode(l1) + getNumberFromNode(l2)
 };
+
+function getNumberFromNode(node) {
+    return Number(getStringNumberFromNode(node))
+}
+
+function getStringNumberFromNode(node) {
+    if (!node) {
+        return ''
+    }
+
+    return getNumberFromNode(node.next) + node.val.toString()
+}
+
+// function getNumberFromNodeIterative(node) {
+//     let stringNum = ''
+//     for (let current = node; current; current = current.next) {
+//         stringNum = current.val + stringNum
+//     }
+//     return Number(stringNum)
+// }
 
 function ListNode(val) {
     this.val = val;
@@ -47,3 +67,4 @@ const nodeTwo3 = new ListNode(4)
 nodeTwo2.next = nodeTwo3
 
 console.log(addTwoNumbers(nodeOne1, nodeTwo1))
+
