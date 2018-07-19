@@ -26,6 +26,36 @@ Explanation: 342 + 465 = 807.
  * @return {ListNode}
  */
 
+
+/**
+ * RECURSIVE SOLUTION
+ **/
+function addTwoNumbers(l1, l2, carry = 0) {
+    if (!l1 && !l2 && !carry) {
+        return null
+    }
+
+    if (!l1) {
+        l1 = new ListNode(0)
+    }
+
+    if (!l2) {
+        l2 = new ListNode(0)
+    }
+
+    const currentTotal = l1.val + l2.val + carry
+    const currentVal = currentTotal % 10
+    const nextCarry = Math.floor(currentTotal / 10)
+
+    const currentNode = new ListNode(currentVal)
+    currentNode.next = addTwoNumbers(l1.next, l2.next, nextCarry)
+    return currentNode
+}
+
+/**
+ * ITERATIVE SOLUTION
+ **
+
 function addTwoNumbers(l1, l2) {
     const firstVal = l1.val + l2.val
     const resultNode = new ListNode(firstVal % 10)
@@ -55,10 +85,12 @@ function addTwoNumbers(l1, l2) {
 
     return resultNode
 }
+**/
 
 /**
-The answer below sort of works, except does not handle the use case of large numbers w/ scientific notation
-
+ * STRING BASED SOLUTION
+ * The answer below sort of works, except does not handle the use case of large numbers w/ scientific notation
+ **
 
 var addTwoNumbers = function(l1, l2) {
     const sum = getNumberFromNode(l1) + getNumberFromNode(l2)
@@ -83,7 +115,9 @@ function getStringNumberFromNode(node) {
 }
 */
 
-// HELPERS
+/**
+ * HELPERS
+ **/
 
 function createListFromBackwardsArray(arr) {
     const forwardArr = arr.reverse()
@@ -111,12 +145,19 @@ function ListNode(val) {
 }
 
 
-// TEST CASES
+/**
+ * TEST CASES
+ **/
 
 const nodeOne = createListFromBackwardsArray([2, 4, 3])
 const nodeTwo = createListFromBackwardsArray([5, 6, 4])
 
-console.log(addTwoNumbers(nodeOne, nodeTwo))
+console.log(addTwoNumbers(nodeOne, nodeTwo)) // [7, 0, 8]
+
+const node1 = createListFromBackwardsArray([9, 8, 7])
+const node2 = createListFromBackwardsArray([5, 6, 4])
+
+console.log(addTwoNumbers(node1, node2)) // [4, 5, 2, 1]
 
 const nodeThree = createListFromBackwardsArray([2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,9])
 const nodeFour = createListFromBackwardsArray([5,6,4,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,9,9,9,9])
