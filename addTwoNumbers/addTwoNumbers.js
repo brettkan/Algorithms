@@ -26,11 +26,17 @@ Explanation: 342 + 465 = 807.
  * @return {ListNode}
  */
 var addTwoNumbers = function(l1, l2) {
-    return getNumberFromNode(l1) + getNumberFromNode(l2)
+    const sum = getNumberFromNode(l1) + getNumberFromNode(l2)
+    const sumArr = sum.toString().split('').reverse().map(stringNum => {
+        return Number(stringNum)
+    })
+
+    return createListFromBackwardsArray(sumArr)
 };
 
 function getNumberFromNode(node) {
-    return Number(getStringNumberFromNode(node))
+    const num = getStringNumberFromNode(node)
+    return Number(num)
 }
 
 function getStringNumberFromNode(node) {
@@ -38,7 +44,19 @@ function getStringNumberFromNode(node) {
         return ''
     }
 
-    return getNumberFromNode(node.next) + node.val.toString()
+    return getStringNumberFromNode(node.next) + node.val.toString()
+}
+
+function createListFromBackwardsArray(arr) {
+    const forwardArr = arr.reverse()
+    const resultNode = new ListNode(forwardArr.pop())
+    let currentNode = resultNode
+    while (forwardArr.length) {
+        currentNode.next = new ListNode(forwardArr.pop())
+        currentNode = currentNode.next
+    }
+
+    return resultNode
 }
 
 // function getNumberFromNodeIterative(node) {
@@ -54,17 +72,13 @@ function ListNode(val) {
     this.next = null;
 }
 
-const nodeOne1 = new ListNode(2)
-const nodeOne2 = new ListNode(4)
-nodeOne1.next = nodeOne2
-const nodeOne3 = new ListNode(3)
-nodeOne2.next = nodeOne3
+// const nodeOne = createListFromBackwardsArray([2, 4, 3])
+// const nodeTwo = createListFromBackwardsArray([5, 6, 4])
 
-const nodeTwo1 = new ListNode(5)
-const nodeTwo2 = new ListNode(6)
-nodeTwo1.next = nodeTwo2
-const nodeTwo3 = new ListNode(4)
-nodeTwo2.next = nodeTwo3
+// console.log(addTwoNumbers(nodeOne, nodeTwo))
 
-console.log(addTwoNumbers(nodeOne1, nodeTwo1))
+const nodeThree = createListFromBackwardsArray([2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,9])
+const nodeFour = createListFromBackwardsArray([5,6,4,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,2,4,3,9,9,9,9])
+
+console.log(addTwoNumbers(nodeThree, nodeFour))
 
