@@ -15,10 +15,22 @@ There are many calls to sumRange function.
 
 
 /**
+ * CACHING SOLUTION
+ **/
+
+/**
  * @param {number[]} nums
  */
 function NumArray(nums) {
-    this.nums = nums
+    this.rangeCache = new Map()
+
+    for (let i = 0; i < nums.length; i++) {
+        let sum = 0
+        for (let j = i; j < nums.length; j++) {
+            sum += nums[j]
+            this.rangeCache.set(`${i}, ${j}`, sum)
+        }
+    }
 };
 
 /** 
@@ -27,12 +39,26 @@ function NumArray(nums) {
  * @return {number}
  */
 NumArray.prototype.sumRange = function(i, j) {
+    return this.rangeCache.get(`${i}, ${j}`)
+};
+
+
+/**
+ * BRUTE FORCE SOLUTION
+ **
+function NumArray(nums) {
+    this.nums = nums
+}
+
+NumArray.prototype.sumRange = function(i, j) {
     let sum = 0
     for (let index = i; index <= j; index++) {
         sum += this.nums[index]
     }
     return sum
 };
+*/
+
 
 /** 
  * Your NumArray object will be instantiated and called as such:
