@@ -27,10 +27,11 @@ function NumArray(nums) {
  * @return {number}
  */
 NumArray.prototype.sumRange = function(i, j) {
-    const rangeArr = this.nums.slice(i, j + 1)
-    return rangeArr.reduce((sum, num) => {
-        return sum + num
-    }, 0)
+    let sum = 0
+    for (let index = i; index <= j; index++) {
+        sum += this.nums[index]
+    }
+    return sum
 };
 
 /** 
@@ -44,5 +45,8 @@ NumArray.prototype.sumRange = function(i, j) {
  * TEST CASES
  **/
 
-
+const sumArr = new NumArray([-2,0,3,-5,2,-1])
+console.log(sumArr.sumRange(0, 2))
+console.log(sumArr.sumRange(2, 5))
+console.log(sumArr.sumRange(0, 5))
 
