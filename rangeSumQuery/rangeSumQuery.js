@@ -18,7 +18,7 @@ There are many calls to sumRange function.
  * @param {number[]} nums
  */
 function NumArray(nums) {
-    
+    this.nums = nums
 };
 
 /** 
@@ -27,7 +27,10 @@ function NumArray(nums) {
  * @return {number}
  */
 NumArray.prototype.sumRange = function(i, j) {
-    
+    const rangeArr = this.nums.slice(i, j + 1)
+    return rangeArr.reduce((sum, num) => {
+        return sum + num
+    }, 0)
 };
 
 /** 
