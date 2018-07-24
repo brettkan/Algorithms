@@ -24,12 +24,10 @@ There are many calls to sumRange function.
 function NumArray(nums) {
     this.rangeCache = new Map()
 
+    let sum = 0
     for (let i = 0; i < nums.length; i++) {
-        let sum = 0
-        for (let j = i; j < nums.length; j++) {
-            sum += nums[j]
-            this.rangeCache.set(`${i}, ${j}`, sum)
-        }
+        sum += nums[i]
+        this.rangeCache.set(i, sum)
     }
 };
 
@@ -39,8 +37,38 @@ function NumArray(nums) {
  * @return {number}
  */
 NumArray.prototype.sumRange = function(i, j) {
-    return this.rangeCache.get(`${i}, ${j}`)
+    let firstSum = i === 0 ? 0 : this.rangeCache.get(i - 1)
+    return this.rangeCache.get(j) - firstSum
 };
+
+/** 
+ * Your NumArray object will be instantiated and called as such:
+ * var obj = Object.create(NumArray).createNew(nums)
+ * var param_1 = obj.sumRange(i,j)
+ */
+
+
+
+/**
+ * SIMPLE CACHING SOLUTION
+ **
+
+ function NumArray(nums) {
+     this.rangeCache = new Map()
+
+     for (let i = 0; i < nums.length; i++) {
+         let sum = 0
+         for (let j = i; j < nums.length; j++) {
+             sum += nums[j]
+             this.rangeCache.set(`${i}, ${j}`, sum)
+         }
+     }
+ };
+
+ NumArray.prototype.sumRange = function(i, j) {
+     return this.rangeCache.get(`${i}, ${j}`)
+ };
+ /*
 
 
 /**
@@ -60,13 +88,6 @@ NumArray.prototype.sumRange = function(i, j) {
 */
 
 
-/** 
- * Your NumArray object will be instantiated and called as such:
- * var obj = Object.create(NumArray).createNew(nums)
- * var param_1 = obj.sumRange(i,j)
- */
-
-
 /**
  * TEST CASES
  **/
@@ -76,3 +97,4 @@ console.log(sumArr.sumRange(0, 2))
 console.log(sumArr.sumRange(2, 5))
 console.log(sumArr.sumRange(0, 5))
 
+// [-2, -2, 1, -4, -2, -3]
