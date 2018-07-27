@@ -34,8 +34,30 @@ tree format) as [], not null.
  * @return {TreeNode}
  */
 function searchBST(root, val) {
-    
-};
+    if (root.val === val) {
+        return root
+    }
+
+    if (root.left) {
+        const leftSearchResult = searchBST(root.left, val)
+        if (leftSearchResult && !Array.isArray(leftSearchResult)) {
+            return leftSearchResult
+        }
+    }
+
+    if (root.right) {
+        const rightSearchResult = searchBST(root.right, val)
+        if (rightSearchResult && !Array.isArray(rightSearchResult)) {
+            return rightSearchResult
+        }
+    }
+
+    return []
+}
+
+/**
+ * HELPERS
+ **/
 
 function TreeNode(val) {
     this.val = val;
@@ -46,4 +68,19 @@ function TreeNode(val) {
 /**
  * TEST CASES
  **/
+
+const rootNode = new TreeNode(4)
+const node2 = new TreeNode(2)
+const node3 = new TreeNode(7)
+const node4 = new TreeNode(1)
+const node5 = new TreeNode(3)
+
+rootNode.left = node2
+rootNode.right = node3
+node2.left = node4
+node2.right = node5
+
+console.log(searchBST(rootNode, 2))
+console.log(searchBST(rootNode, 7))
+console.log(searchBST(rootNode, 5))
 
