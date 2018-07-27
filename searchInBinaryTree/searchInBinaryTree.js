@@ -37,26 +37,18 @@ tree format) as [], not null.
 function searchBST(root, val) {
     const searchArray = [root]
 
-    function searchNode(root, val) {
-        if (root.val === val) {
-            return root
-        }
-
-        if (root.left) {
-            searchArray.push(root.left)
-        }
-
-        if (root.right) {
-            searchArray.push(root.right)
-        }
-
-        return null
-    }
-
     while (searchArray.length) {
         let nextNode = searchArray.shift()
-        if (searchNode(nextNode, val)) {
+        if (nextNode.val === val) {
             return nextNode
+        }
+
+        if (nextNode.left) {
+            searchArray.push(nextNode.left)
+        }
+
+        if (nextNode.right) {
+            searchArray.push(nextNode.right)
         }
     }
 
