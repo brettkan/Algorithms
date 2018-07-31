@@ -43,15 +43,15 @@ An erasure may refer to a location with no brick - if it does, no bricks drop.
  */
 function hitBricks(grid, hits) {
     let currentGrid = grid
-    let droppedBricks = 0
+    let droppedBricks = []
     hits.forEach(hit => {
         const hitHelper = new HitHelper(currentGrid)
         hitHelper.hitBrick(hit)
         currentGrid = hitHelper.grid
-        droppedBricks += hitHelper.fallenBricks
+        droppedBricks.push(hitHelper.fallenBricks)
     })
 
-    return droppedBricks ? [droppedBricks] : [0, 0]
+    return droppedBricks
 };
 
 // const gridCache = {}
