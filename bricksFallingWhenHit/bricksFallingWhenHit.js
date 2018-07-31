@@ -42,8 +42,113 @@ An erasure may refer to a location with no brick - if it does, no bricks drop.
  * @return {number[]}
  */
 function hitBricks(grid, hits) {
-    
+    let currentGrid = grid
+    let droppedBricks = 0
+    hits.forEach(hit => {
+        const hitHelper = new HitHelper(currentGrid)
+        hitHelper.hitBrick(hit)
+        currentGrid = hitHelper.grid
+        droppedBricks += hitHelper.fallenBricks
+    })
+
+    return droppedBricks ? [droppedBricks] : [0, 0]
 };
+
+// const gridCache = {}
+
+class HitHelper {
+    constructor(grid) {
+        // "deep" copy of grid
+        this.grid = grid.map(column => {
+            return [...column]
+        })
+        this.fallenBricks = 0
+    }
+
+    hitBrick(hit) {
+        if (!this.grid[hit[0]][hit[1]]) {
+            return false
+        }
+
+        this.grid[hit[0]][hit[1]] = 0
+
+        const placesToCheck = [
+            [hit[0] - 1, hit[1]],
+            [hit[0], hit[1] + 1],
+            [hit[0] + 1, hit[1]],
+            [hit[0], hit[1] - 1]
+        ]
+
+        for (let i = 0; i < placesToCheck.length; i++) {
+            let nextHit = placesToCheck[i]
+            if (this.existsInGrid(nextHit)) {            
+                let checkHelper = new CheckGridHelper(this.grid)
+                let isConnected = checkHelper.checkConnected(nextHit)
+                if (!isConnected) {
+                    this.fallenBricks += checkHelper.alreadyCheckedHits.size
+                    for (checkedHit of checkHelper.alreadyCheckedHits) {
+                        let checkedHitArray = checkedHit[0].split(',')
+                        this.grid[checkedHitArray[0]][checkedHitArray[1]] = 0
+                    }
+                }
+            }
+        }
+    }
+
+    existsInGrid(hit) {
+        return hit[0] >= 0 &&
+            hit[0] < this.grid.length &&
+            hit[1] >= 0 &&
+            hit[1] < this.grid[0].length
+    }
+}
+
+class CheckGridHelper {
+    constructor(grid) {
+        this.grid = grid
+        this.alreadyCheckedHits = new Map()
+    }
+
+    checkConnected(hit) {
+        if (!this.grid[hit[0]][hit[1]]) {
+            return false
+        }
+
+        if (hit[0] === 0) {
+            // add to gridcache checked?
+            return true
+        } else {
+            // add to gridcache not checked?
+            this.alreadyCheckedHits.set(hit.toString(), true)
+        }
+
+        const placesToCheck = [
+            [hit[0] - 1, hit[1]],
+            [hit[0], hit[1] + 1],
+            [hit[0] + 1, hit[1]],
+            [hit[0], hit[1] - 1]
+        ]
+        for (let i = 0; i < placesToCheck.length; i++) {
+            let nextHit = placesToCheck[i]
+            if (this.existsInGrid(nextHit) && !this.alreadyCheckedHits.has(nextHit.toString()) {
+                let isConnected = checkConnected(nextHit)
+                if (isConnected) {
+                    return isConnected
+                }
+            }
+        }
+
+        return false
+    }
+
+    existsInGrid(hit) {
+        return hit[0] >= 0 &&
+            hit[0] < this.grid.length &&
+            hit[1] >= 0 &&
+            hit[1] < this.grid[0].length
+    }
+}
+
 
 
 /**
