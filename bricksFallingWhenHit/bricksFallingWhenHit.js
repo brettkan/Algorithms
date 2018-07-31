@@ -86,7 +86,7 @@ class HitHelper {
                 let isConnected = checkHelper.checkConnected(nextHit)
                 if (!isConnected) {
                     this.fallenBricks += checkHelper.alreadyCheckedHits.size
-                    for (checkedHit of checkHelper.alreadyCheckedHits) {
+                    for (let checkedHit of checkHelper.alreadyCheckedHits) {
                         let checkedHitArray = checkedHit[0].split(',')
                         this.grid[checkedHitArray[0]][checkedHitArray[1]] = 0
                     }
@@ -130,8 +130,8 @@ class CheckGridHelper {
         ]
         for (let i = 0; i < placesToCheck.length; i++) {
             let nextHit = placesToCheck[i]
-            if (this.existsInGrid(nextHit) && !this.alreadyCheckedHits.has(nextHit.toString()) {
-                let isConnected = checkConnected(nextHit)
+            if (this.existsInGrid(nextHit) && !this.alreadyCheckedHits.has(nextHit.toString())) {
+                let isConnected = this.checkConnected(nextHit)
                 if (isConnected) {
                     return isConnected
                 }
@@ -161,5 +161,5 @@ class CheckGridHelper {
  * TEST CASES
  **/
 
-
-
+console.log(hitBricks([[1,0,0,0],[1,1,1,0]], [[1,0]]))
+console.log(hitBricks([[1,0,0,0],[1,1,0,0]], [[1,1],[1,0]]))
