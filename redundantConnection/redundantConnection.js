@@ -41,7 +41,67 @@ Every integer represented in the 2D-array will be between 1 and N, where N is th
  * @return {number[]}
  */
 function findRedundantConnection(edges) {
-    
+    const tree = new Tree(edges)
+    return tree.redundantNodes[tree.redundantNodes.length - 1]
+}
+
+class Tree {
+    constructor(edges) {
+        this.nodes = new Map()
+        this.redundantNodes = []
+
+        edges.forEach(edge => {
+            const firstNode = this.nodes.has(edge[0]) ? this.nodes.get(edge[0]) : new TreeNode(edge[0])
+            const secondNode = this.nodes.has(edge[1]) ? this.nodes.get(edge[1]) : new TreeNode(edge[1])
+
+            // check to see if both edges have another connection
+            if (firstNode.edges.size && secondNode.edges.size && firstNode.hasConnection(edge[1])) {
+                this.redundantNodes.push(edge)
+            }
+
+            // Add second node as edge to first node
+            firstNode.addEdge(secondNode)
+            this.nodes.set(edge[0], firstNode)
+
+            // Add first node as edge to second node
+            secondNode.addEdge(firstNode)
+            this.nodes.set(edge[1], secondNode)
+        })
+    }
+
+}
+
+class TreeNode {
+    constructor(val) {
+        this.val = val
+        this.edges = new Set()
+    }
+
+    addEdge(edge) {
+        this.edges.add(edge)
+        return this
+    }
+
+    hasConnection(searchVal, alreadyChecked = new Set()) {
+        if (this.val === searchVal) {
+            return true
+        } else {
+            alreadyChecked.add(this.val)
+        }
+
+        for (let edge of this.edges) {
+            // Don't recurse if we have already checked this number
+            if (alreadyChecked.has(edge.val)) {
+                continue
+            }
+
+            if (edge.hasConnection(searchVal, alreadyChecked)) {
+                return true
+            }
+        }
+
+        return false
+    }
 }
 
 
@@ -55,3 +115,5 @@ function findRedundantConnection(edges) {
  * TEST CASES
  **/
 
+console.log(findRedundantConnection([[1,2], [1,3], [2,3]]))
+console.log(findRedundantConnection([[1,2], [2,3], [3,4], [1,4], [1,5]]))
