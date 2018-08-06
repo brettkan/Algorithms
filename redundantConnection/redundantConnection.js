@@ -41,14 +41,58 @@ Every integer represented in the 2D-array will be between 1 and N, where N is th
  * @return {number[]}
  */
 function findRedundantConnection(edges) {
+    const graph = new Map()
+    const redundantEdges = []
+
+    function dfs(target, current, seen = new Set()) {
+       if (current === target) {
+           return true
+       } else {
+           seen.add(current)
+       }
+
+       for (let edge of graph.get(current)) {
+           // Don't recurse if we have already checked this number
+           if (seen.has(edge)) {
+               continue
+           }
+
+           if (dfs(target, edge, seen)) {
+               return true
+           }
+       }
+
+       return false
+    }
+
+    edges.forEach(edge => {
+        if (graph.get(edge[0]) && graph.get(edge[1]) && dfs(edge[0], edge[1])) {
+            redundantEdges.push(edge)
+        }
+
+        graph.set(edge[0], graph.get(edge[0]) || new Set())
+        graph.set(edge[1], graph.get(edge[1]) || new Set())
+
+        graph.get(edge[0]).add(edge[1])
+        graph.get(edge[1]).add(edge[0])
+    })
+
+    return redundantEdges[redundantEdges.length - 1]
+}
+
+
+/**
+ * OLD SOLUTION
+ * 
+function findRedundantConnection(edges) {
     const tree = new Tree(edges)
-    return tree.redundantNodes[tree.redundantNodes.length - 1]
+    return tree.redundantEdges[tree.redundantEdges.length - 1]
 }
 
 class Tree {
     constructor(edges) {
         this.nodes = new Map()
-        this.redundantNodes = []
+        this.redundantEdges = []
 
         edges.forEach(edge => {
             const firstNode = this.nodes.has(edge[0]) ? this.nodes.get(edge[0]) : new TreeNode(edge[0])
@@ -56,7 +100,7 @@ class Tree {
 
             // check to see if both edges have another connection
             if (firstNode.edges.size && secondNode.edges.size && firstNode.hasConnection(edge[1])) {
-                this.redundantNodes.push(edge)
+                this.redundantEdges.push(edge)
             }
 
             // Add second node as edge to first node
@@ -103,6 +147,8 @@ class TreeNode {
         return false
     }
 }
+
+*/
 
 
 /**
