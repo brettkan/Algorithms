@@ -40,6 +40,47 @@ Every integer represented in the 2D-array will be between 1 and N, where N is th
  * @param {number[][]} edges
  * @return {number[]}
  */
+ function findRedundantConnection(edges) {
+     const dsu = new DSU()
+     const redundantEdges = []
+     for (edge of edges) {
+        if (!dsu.union(edge[0], edge[1])) {
+            redundantEdges.push(edge)
+        }
+     }
+
+     return redundantEdges[redundantEdges.length - 1]
+ }
+
+ class DSU {
+    constructor() {
+        this.parent = {}
+    }
+
+    find(x) {
+        this.parent[x] = this.parent[x] || x
+
+        if (x !== this.parent[x]) {
+            this.parent[x] = this.find(this.parent[x])
+        }
+
+        return this.parent[x]
+    }
+
+    union(x, y) {
+        if (this.find(x) === this.find(y)) {
+            return false
+        }
+
+        this.parent[this.find(x)] = this.find(y)
+        return true
+    }
+ }
+
+/**
+ * DFS SOLUTION
+ **
+
 function findRedundantConnection(edges) {
     const graph = new Map()
     const redundantEdges = []
@@ -79,6 +120,8 @@ function findRedundantConnection(edges) {
 
     return redundantEdges[redundantEdges.length - 1]
 }
+
+*/
 
 
 /**
