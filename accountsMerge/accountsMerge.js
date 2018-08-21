@@ -40,8 +40,71 @@ The length of accounts[i][j] will be in the range [1, 30].
  * @return {string[][]}
  */
 var accountsMerge = function(accounts) {
-    
+    const accountNames = new Map()
+    const dsu = new DSU()
+
+    accounts.forEach(([accountName, ...accountEmails]) => {
+        accountEmails.forEach((accountEmail, index, emailArray) => {
+            accountNames.set(accountEmail, accountName)
+            if (index === 0) {
+                dsu.add(accountEmail)
+            } else {
+                dsu.union(accountEmail, emailArray[index - 1])
+            }
+        })
+    })
+
+    const extractedUnionSet = dsu.extract()
+    for (const emailSet of extractedUnionSet) {
+        emailSet.sort()
+        emailSet.unshift(accountNames.get(emailSet[0]))
+    }
+    return extractedUnionSet
 };
+
+class DSU {
+    constructor() {
+        this.parents = new Map()
+    }
+
+    add(x) {
+        this.parents.set(x, this.parents.get(x) || x)
+    }
+
+    findTopParent(x) {
+        this.add(x)
+
+        if (x !== this.parents.get(x)) {
+            this.parents.set(x, this.findTopParent(this.parents.get(x)))
+        }
+
+        return this.parents.get(x)
+    }
+
+    union(x, y) {
+        this.parents.set(this.findTopParent(x), this.findTopParent(y))
+    }
+
+    extract() {
+        for (const [child] of this.parents.entries()) {
+            this.findTopParent(child)
+        }
+
+        const extracted = {}
+
+        for (const [child, parent] of this.parents.entries()) {
+            extracted[parent] = extracted[parent] || []
+            extracted[parent].push(child)
+        }
+
+        const resultArray = Object.values(extracted)
+        for (const set of resultArray) {
+            set.sort()
+        }
+
+        return resultArray
+    }
+}
 
 
 /**
@@ -54,4 +117,6 @@ var accountsMerge = function(accounts) {
  * TEST CASES
  **/
 
-console.log(accountsMerge([["John", "johnsmith@mail.com", "john00@mail.com"], ["John", "johnnybravo@mail.com"],["John", "johnsmith@mail.com", "john_newyork@mail.com"], ["Mary", "mary@mail.com"]]))
+console.log(accountsMerge([["David","David0@m.co","David1@m.co"],["David","David3@m.co","David4@m.co"],["David","David4@m.co","David5@m.co"],["David","David2@m.co","David3@m.co"],["David","David1@m.co","David2@m.co"]]))
+// console.log(accountsMerge([["Alex","Alex5@m.co","Alex4@m.co","Alex0@m.co"],["Ethan","Ethan3@m.co","Ethan3@m.co","Ethan0@m.co"],["Kevin","Kevin4@m.co","Kevin2@m.co","Kevin2@m.co"],["Gabe","Gabe0@m.co","Gabe3@m.co","Gabe2@m.co"],["Gabe","Gabe3@m.co","Gabe4@m.co","Gabe2@m.co"]]))
+// console.log(accountsMerge([["John", "johnsmith@mail.com", "john00@mail.com"], ["John", "johnnybravo@mail.com"],["John", "johnsmith@mail.com", "john_newyork@mail.com"], ["Mary", "mary@mail.com"]]))
