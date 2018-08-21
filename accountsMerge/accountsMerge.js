@@ -40,26 +40,35 @@ The length of accounts[i][j] will be in the range [1, 30].
  * @return {string[][]}
  */
 var accountsMerge = function(accounts) {
-    const accountNames = new Map()
+    const emailToName = new Map()
+    const emailToId = new Map()
     const dsu = new DSU()
+    let currentId = 1
 
     accounts.forEach(([accountName, ...accountEmails]) => {
         accountEmails.forEach((accountEmail, index, emailArray) => {
-            accountNames.set(accountEmail, accountName)
-            if (index === 0) {
-                dsu.add(accountEmail)
-            } else {
-                dsu.union(accountEmail, emailArray[index - 1])
+            emailToName.set(accountEmail, accountName)
+            if (!emailToId.has(accountEmail)) {
+                emailToId.set(accountEmail, currentId)
+                currentId++
             }
+            dsu.union(emailToId.get(accountEmail), emailToId.get(emailArray[0]))
         })
     })
 
-    const extractedUnionSet = dsu.extract()
-    for (const emailSet of extractedUnionSet) {
-        emailSet.sort()
-        emailSet.unshift(accountNames.get(emailSet[0]))
-    }
-    return extractedUnionSet
+    const resultSet = {}
+    emailToName.forEach((name, email) => {
+        const parentId = dsu.findTopParent(emailToId.get(email))
+        resultSet[parentId] = resultSet[parentId] || []
+        resultSet[parentId].push(email)
+    })
+
+    const answer = Object.values(resultSet)
+    answer.forEach(emailArray => {
+        emailArray.sort().unshift(emailToName.get(emailArray[0]))
+    })
+
+    return answer
 };
 
 class DSU {
@@ -67,12 +76,8 @@ class DSU {
         this.parents = new Map()
     }
 
-    add(x) {
-        this.parents.set(x, this.parents.get(x) || x)
-    }
-
     findTopParent(x) {
-        this.add(x)
+        this.parents.set(x, this.parents.get(x) || x)
 
         if (x !== this.parents.get(x)) {
             this.parents.set(x, this.findTopParent(this.parents.get(x)))
@@ -83,26 +88,6 @@ class DSU {
 
     union(x, y) {
         this.parents.set(this.findTopParent(x), this.findTopParent(y))
-    }
-
-    extract() {
-        for (const [child] of this.parents.entries()) {
-            this.findTopParent(child)
-        }
-
-        const extracted = {}
-
-        for (const [child, parent] of this.parents.entries()) {
-            extracted[parent] = extracted[parent] || []
-            extracted[parent].push(child)
-        }
-
-        const resultArray = Object.values(extracted)
-        for (const set of resultArray) {
-            set.sort()
-        }
-
-        return resultArray
     }
 }
 
