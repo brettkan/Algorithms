@@ -26,13 +26,6 @@ Note: You may assume the sum of values in any subtree is in the range of 32-bit 
 
 
 /**
- * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
- * }
- */
-/**
  * @param {TreeNode} root
  * @return {number[]}
  */
@@ -45,12 +38,27 @@ var findFrequentTreeSum = function(root) {
  * HELPERS
  **/
 
-
+// Definition for a binary tree node.
+function TreeNode(val) {
+    this.val = val;
+    this.left = this.right = null;
+}
 
 /**
  * TEST CASES
  **/
+const root1 = new TreeNode(5)
+const root2 = new TreeNode(2)
+const root3 = new TreeNode(-3)
+root1.left = root2
+root1.right = root3
 
-console.log(findFrequentTreeSum())
-console.log(findFrequentTreeSum())
-console.log(findFrequentTreeSum())
+const rootA = new TreeNode(5)
+const rootB = new TreeNode(2)
+const rootC = new TreeNode(-5)
+rootA.left = rootB
+rootA.right = rootC
+
+
+console.log(findFrequentTreeSum(root1), 'and answer is: [2, -3, 4]')
+console.log(findFrequentTreeSum(root2), 'and answer is: [2]')
