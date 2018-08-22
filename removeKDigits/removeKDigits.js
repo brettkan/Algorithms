@@ -52,16 +52,20 @@ var removeKdigits = function(num, k) {
         k -= numToRemove
     }
 
-    // Look at first k+1 digits, and remove "k" number of highest digits
-    const highestLeftArray = num.slice(0, k + 1).split('').sort().reverse()
-    // Remove smallest digit - this one will remain
-    highestLeftArray.pop()
+    for (let i = 0; i < k; i++) {
+        for (let j = 0; j < num.length; j++) {
+            let curr = num[j]
+            let next = num[j + 1]
+            if (j === num.length - 1) {
+                num = num.slice(0, num.length - 1)
+                break
+            }
 
-    // Remove highest digits from num
-    while (highestLeftArray.length > 0) {
-        let digitToRemove = highestLeftArray.shift()
-        let indexToRemove = num.indexOf(digitToRemove)
-        num = num.slice(0, indexToRemove) + num.slice(indexToRemove + 1)
+            if (curr > next) {
+                num = num.slice(0, j) + num.slice(j + 1)
+                break
+            }
+        }
     }
 
     return num || '0'
@@ -83,6 +87,11 @@ console.log(removeKdigits('2403012', 1), 'and expected: 203012')
 console.log(removeKdigits('2403012', 2), 'and expected: 3012')
 console.log(removeKdigits('2403012', 3), 'and expected: 12')
 console.log(removeKdigits('2403012', 4), 'and expected: 1')
+console.log(removeKdigits('2463012', 1), 'and expected: 243012')
+console.log(removeKdigits('123', 1), 'and expected: 12')
+console.log(removeKdigits('12543', 1), 'and expected: 1243')
+console.log(removeKdigits('123', 2), 'and expected: 1')
+console.log(removeKdigits('1203', 2), 'and expected: 3')
 console.log(removeKdigits('10200', 1), 'and expected: 200')
 console.log(removeKdigits('10200', 2), 'and expected: 0')
 console.log(removeKdigits('10', 2), 'and expected: 0')
