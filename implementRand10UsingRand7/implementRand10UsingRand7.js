@@ -47,6 +47,10 @@ var rand10 = function() {
 /**
  * HELPERS
  **/
+ 
+ function rand7() {
+    return Math.ceil(Math.random() * 7)
+ }
 
 
 
