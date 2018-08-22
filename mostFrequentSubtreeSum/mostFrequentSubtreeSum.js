@@ -30,7 +30,35 @@ Note: You may assume the sum of values in any subtree is in the range of 32-bit 
  * @return {number[]}
  */
 var findFrequentTreeSum = function(root) {
-    
+    const sumCounts = new Map()
+
+    // Get sum counts for tree with DFS search
+    function dfsSum(node) {
+        if (!node) {
+            return 0
+        }
+
+        const nodeSum = node.val + dfsSum(node.left) + dfsSum(node.right)
+        sumCounts.set(nodeSum, (sumCounts.get(nodeSum) || 0) + 1)
+
+        return nodeSum
+    }
+
+    dfsSum(root)
+
+    // Find sums with the highest counts
+    let highestSumCount = 0
+    let highestSums = []
+    for (let [sum, count] of sumCounts) {
+        if (count > highestSumCount) {
+            highestSumCount = count
+            highestSums = [sum]
+        } else if (count === highestSumCount) {
+            highestSums.push(sum)
+        }
+    }
+
+    return highestSums
 };
 
 
@@ -59,6 +87,12 @@ const rootC = new TreeNode(-5)
 rootA.left = rootB
 rootA.right = rootC
 
+const superRoot = new TreeNode(1)
+superRoot.left = root1
+superRoot.right = rootA
+
+
 
 console.log(findFrequentTreeSum(root1), 'and answer is: [2, -3, 4]')
 console.log(findFrequentTreeSum(root2), 'and answer is: [2]')
+console.log(findFrequentTreeSum(superRoot), 'and answer is: [2]')
