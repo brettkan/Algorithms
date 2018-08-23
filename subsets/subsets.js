@@ -27,7 +27,21 @@ Output:
  * @return {number[][]}
  */
 var subsets = function(nums) {
-    
+    const solutions = [[]]
+    const current = []
+
+    function generate(index) {
+        for (index; index < nums.length; index++) {
+            current.push(nums[index])
+            solutions.push([...current])
+            generate(index + 1)
+            current.pop()
+        }
+    }
+
+    generate(0)
+
+    return solutions
 };
 
 
