@@ -21,7 +21,25 @@ In this case, you should ignore redundant slashes and return "/home/foo".
  * @return {string}
  */
 var simplifyPath = function(path) {
+    const pathArr = path.split('/')
+    const simplified = []
 
+    for (var i = 0; i < pathArr.length; i++) {
+        let curr = pathArr[i]
+
+        switch (curr) {
+            case '':
+            case '.':
+                break
+            case '..':
+                simplified.pop()
+                break
+            default:
+                simplified.push(curr)
+        }
+    }
+
+    return '/' + simplified.join('/')
 };
 
 
