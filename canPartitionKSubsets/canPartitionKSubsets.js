@@ -29,42 +29,37 @@ var canPartitionKSubsets = function(nums, k) {
         return false
     }
 
-    // Otherwise, try to find solutions
-    const sortedArr = nums.sort().reverse()
-    return findSums(nums, k, [], partitionSum)
+    function findSums(subsetSums = []) {
+        if (!nums.length) {
+            return true
+        }
 
-};
+        const currentNum = nums.pop()
+        for (let i = 0; i < k; i++) {
+            subsetSums[i] = subsetSums[i] || 0
 
-function findSums(nums, k, subsetSums, target) {
-    if (!nums.length) {
-        return true
-    }
-
-    const currentNum = nums[0]
-    for (let i = 0; i < k; i++) {
-        const currentSubsetSum = subsetSums[i] || 0
-
-        if (currentSubsetSum + currentNum <= target) {
-            const nextSums = [...subsetSums]
-            nextSums[i] = (nextSums[i] || 0) + currentNum
-            if (findSums(nums.slice(1), k, nextSums, target)) {
-                return true
+            if (subsetSums[i] + currentNum <= partitionSum) {
+                subsetSums[i] += currentNum
+                if (findSums(subsetSums)) {
+                    return true
+                }
+                subsetSums[i] -= currentNum
             }
-        }
 
-        if (subsetSums[i] === 0) {
-            break
+            if (subsetSums[i] === 0) {
+                break
+            }
+
         }
+        nums.push(currentNum)
+
+        return false
     }
 
-    return false
-}
-
-function allArrayValuesEqual(arr, value) {
-    return arr.reduce((isMatching, next) => {
-        return isMatching && next === value
-    }, true)
-}
+    // Otherwise, try to find solutions
+    const sortedArr = nums.sort()
+    return findSums()
+};
 
 
 /**
@@ -77,8 +72,9 @@ function allArrayValuesEqual(arr, value) {
  * TEST CASES
  **/
 
-console.log(canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 4), 'should be true')
-console.log(canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 5), 'should be false')
-console.log(canPartitionKSubsets([7, 1, 1, 1, 1, 1, 1, 1], 2), 'should be true')
-console.log(canPartitionKSubsets([15,3557,42,3496,5,81,34,95,9,81,42,106,71], 11), 'should be true')
+// console.log(canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 4), 'should be true')
+// console.log(canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 5), 'should be false')
+// console.log(canPartitionKSubsets([7, 1, 1, 1, 1, 1, 1, 1], 2), 'should be true')
+console.log(canPartitionKSubsets([2,2,2,2,3,4,5], 4), 'should be false')
+// console.log(canPartitionKSubsets([15,3557,42,3496,5,81,34,95,9,81,42,106,71], 11), 'should be false')
 
