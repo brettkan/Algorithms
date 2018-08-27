@@ -72,9 +72,9 @@ var canPartitionKSubsets = function(nums, k) {
  * TEST CASES
  **/
 
-// console.log(canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 4), 'should be true')
-// console.log(canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 5), 'should be false')
-// console.log(canPartitionKSubsets([7, 1, 1, 1, 1, 1, 1, 1], 2), 'should be true')
+console.log(canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 4), 'should be true')
+console.log(canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 5), 'should be false')
+console.log(canPartitionKSubsets([7, 1, 1, 1, 1, 1, 1, 1], 2), 'should be true')
 console.log(canPartitionKSubsets([2,2,2,2,3,4,5], 4), 'should be false')
-// console.log(canPartitionKSubsets([15,3557,42,3496,5,81,34,95,9,81,42,106,71], 11), 'should be false')
+console.log(canPartitionKSubsets([15,3557,42,3496,5,81,34,95,9,81,42,106,71], 11), 'should be false')
 
