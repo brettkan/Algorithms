@@ -27,15 +27,19 @@ Could you come up with a one-pass algorithm using only constant space?
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 var sortColors = function(nums) {
-    let i = 0
-    while (i < nums.length) {
-        if (nums[i] > nums[i + 1]) {
-            let temp = nums[i]
-            nums[i] = nums[i + 1]
-            nums[i + 1] = temp
-            i = 0
-        } else {
-            i++
+    let numZeroes = 0
+
+    for (let i = 0; i < nums.length; i++) {
+        let temp
+        if (nums[i] === 0) {
+            temp = nums[i]
+            nums.splice(i, 1)
+            nums.unshift(temp)
+            numZeroes++
+        } else if (nums[i] === 1) {
+            temp = nums[i]
+            nums.splice(i, 1)
+            nums.splice(numZeroes, 0, temp)
         }
     }
 };
