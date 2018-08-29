@@ -45,13 +45,11 @@ var isValidBST = function(root) {
             return false
         }
 
-        const leftMax = max === null ? root.val : Math.min(root.val, max)
-        if (!dfsSearch(root.left, min, leftMax)) {
+        if (!dfsSearch(root.left, min, root.val)) {
             return false
         }
 
-        const rightMin = min === null ? root.val : Math.max(root.val, min)
-        if (!dfsSearch(root.right, rightMin, max)) {
+        if (!dfsSearch(root.right, root.val, max)) {
             return false
         }
 
