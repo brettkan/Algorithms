@@ -27,6 +27,30 @@ Output:
  * @param {TreeNode} root
  * @return {TreeNode}
  */
+
+ var invertTree = function(root) {
+     const queue = [root]
+
+     while (queue.length) {
+        let current = queue.shift()
+        let leftRef = current.left
+        current.left = current.right
+        current.right = leftRef
+
+        if (current.left) {
+            queue.push(current.left)
+        }
+        if (current.right) {
+            queue.push(current.right)
+        }
+     }
+
+     return root
+ }
+
+/**
+ * Recursive Solution
+ ** 
 var invertTree = function(root) {
     if (!root) {
         return null
@@ -38,7 +62,7 @@ var invertTree = function(root) {
 
     return root
 };
-
+*/
 
 /**
  * HELPERS
