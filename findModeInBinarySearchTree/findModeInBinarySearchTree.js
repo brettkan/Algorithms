@@ -35,7 +35,32 @@ incurred due to recursion does not count).
  * @return {number[]}
  */
 var findMode = function(root) {
-    
+    const valuesMap = new Map()
+
+    function dfs(node) {
+        if (!node) {
+            return
+        }
+
+        valuesMap.set(node.val, (valuesMap.get(node.val) || 0) + 1)
+        dfs(node.left)
+        dfs(node.right)
+    }
+
+    dfs(root)
+
+    let maxVals = []
+    let maxCount = 0
+    for (let [value, count] of valuesMap) {
+        if (count > maxCount) {
+            maxVals = [value]
+            maxCount = count
+        } else if (count === maxCount) {
+            maxVals.push(value)
+        }
+    }
+
+    return maxVals
 };
 
 
