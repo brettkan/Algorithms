@@ -36,18 +36,14 @@ incurred due to recursion does not count).
  */
 var findMode = function(root) {
     const valuesMap = new Map()
+    const queue = [root]
 
-    function dfs(node) {
-        if (!node) {
-            return
-        }
-
-        valuesMap.set(node.val, (valuesMap.get(node.val) || 0) + 1)
-        dfs(node.left)
-        dfs(node.right)
+    while (queue.length) {
+        let currentNode = queue.shift()
+        valuesMap.set(currentNode.val, (valuesMap.get(currentNode.val) || 0) + 1)
+        if (currentNode.left) { queue.push(currentNode.left) }
+        if (currentNode.right) { queue.push(currentNode.right) }
     }
-
-    dfs(root)
 
     let maxVals = []
     let maxCount = 0
@@ -85,4 +81,4 @@ const node3 = new TreeNode(2)
 node1.right = node2
 node2.left = node3
 
-console.log(findMode(node1), 'and answer should be 2')
+console.log(findMode(node1), 'and answer should be [2]')
