@@ -36,7 +36,33 @@ Explanation: The input is: [5,1,4,null,null,3,6]. The root node's value
  * @return {boolean}
  */
 var isValidBST = function(root) {
-    
+    function dfsSearch(root, min = null, max = null) {
+        if (!root) {
+            return true
+        }
+
+        if ((min !== null && root.val <= min) || (max !== null && root.val >= max)) {
+            return false
+        }
+
+        const leftMax = max === null ? root.val : Math.min(root.val, max)
+        if (!dfsSearch(root.left, min, leftMax)) {
+            return false
+        }
+
+        const rightMin = min === null ? root.val : Math.max(root.val, min)
+        if (!dfsSearch(root.right, rightMin, max)) {
+            return false
+        }
+
+        return true
+    }
+
+    if (!root) {
+        return true
+    }
+
+    return dfsSearch(root)
 };
 
 
@@ -70,6 +96,10 @@ nodeA.left = nodeB
 nodeA.right = nodeC
 nodeC.left = nodeD
 nodeC.right = nodeE
+
+const nodeOne = new TreeNode(1)
+const nodeTwo = new TreeNode(1)
+nodeOne.right = nodeTwo
 
 console.log(isValidBST(node1), 'and answer should be true')
 console.log(isValidBST(nodeA), 'and answer should be false')
