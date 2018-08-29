@@ -28,22 +28,16 @@ Output:
  * @return {TreeNode}
  */
 var invertTree = function(root) {
-    dfsInvert(root)
-    return root
-};
-
-function dfsInvert(node) {
-    if (!node) {
-        return
+    if (!root) {
+        return null
     }
 
-    const temp = node.left
-    node.left = node.right
-    node.right = temp
+    const leftRef = root.left
+    root.left = invertTree(root.right)
+    root.right = invertTree(leftRef)
 
-    dfsInvert(node.left)
-    dfsInvert(node.right)
-}
+    return root
+};
 
 
 /**
