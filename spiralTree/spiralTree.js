@@ -11,11 +11,9 @@ Ex.
   /  \     /  \
  4    5   6    7
 
-[[1], [2, 3], [4, 5, 6, 7]]
-
 Output: 1, 3, 2, 4, 5, 6, 7
 
-
+Ex 2.
          1
         / \
        2   3
@@ -23,6 +21,9 @@ Output: 1, 3, 2, 4, 5, 6, 7
          4   5
         /     \
        6       7
+
+Output: 1, 3, 2, 4, 5, 7, 6
+
 */
 
 class Node {
@@ -46,6 +47,20 @@ two.left = four;
 two.right = five;
 three.left = six;
 three.right = seven;
+
+const a = new Node(1);
+const b = new Node(2);
+const c = new Node(3);
+const d = new Node(4);
+const e = new Node(5);
+const f = new Node(6);
+const g = new Node(7);
+a.left = b;
+a.right = c;
+c.left = d;
+c.right = e;
+d.left = f
+e.right = g;
 
 function spiralTraversal(rootNode) {
     const stackOne = [rootNode]
@@ -84,3 +99,4 @@ function spiralTraversal(rootNode) {
 }
 
 console.log(spiralTraversal(one)); // 1, 3, 2, 4, 5, 6, 7
+console.log(spiralTraversal(a)); // 1, 3, 2, 4, 5, 7, 6
