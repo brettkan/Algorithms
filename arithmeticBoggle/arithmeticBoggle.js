@@ -25,13 +25,11 @@ function arithmeticBoggle(magicNumber, numbers) {
         }
 
         for (let i = 0; i < options.length; i++) {
-            let curNumber = options[i]
-
-            if (attemptSolution(target, options.slice(i + 1), current + curNumber)) {
+            if (attemptSolution(target, options.slice(i + 1), current + options[i])) {
                 return true
             }
 
-            if (attemptSolution(target, options.slice(i + 1), current - curNumber)) {
+            if (attemptSolution(target, options.slice(i + 1), current - options[i])) {
                 return true
             }
         }
@@ -58,5 +56,5 @@ console.log(arithmeticBoggle(0, [])) // = true
 console.log(arithmeticBoggle(1, [])) // = false
 console.log(arithmeticBoggle(1, [1])) // = true
 console.log(arithmeticBoggle(0, [1])) // = false
-console.log(arithmeticBoggle(-1, [4, 3, 1])) // = true
+console.log(arithmeticBoggle(-8, [1, 3, 5])) // = true
 
