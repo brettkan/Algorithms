@@ -27,10 +27,7 @@ var maxSubArray = function(nums) {
     for (let i = 0; i < nums.length; i++) {
         latestContiguousSum += nums[i]
         maxSum = Math.max(maxSum, latestContiguousSum)
-
-        if (latestContiguousSum < 0) {
-            latestContiguousSum = 0
-        }
+        latestContiguousSum = Math.max(latestContiguousSum, 0)
     }
 
     return maxSum
@@ -48,3 +45,4 @@ var maxSubArray = function(nums) {
  **/
 
 console.log(maxSubArray([-2,1,-3,4,-1,2,1,-5,4])); // 6
+console.log(maxSubArray([-6,-1,-2,-4,-5,-2])); // -1
