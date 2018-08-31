@@ -20,7 +20,20 @@ approach, which is more subtle.
  * @return {number}
  */
 var maxSubArray = function(nums) {
-    
+    let lastNegativeIndex = -1
+    let maxSum = nums[0]
+    let latestContiguousSum = 0
+
+    for (let i = 0; i < nums.length; i++) {
+        latestContiguousSum += nums[i]
+        maxSum = Math.max(maxSum, latestContiguousSum)
+
+        if (latestContiguousSum < 0) {
+            latestContiguousSum = 0
+        }
+    }
+
+    return maxSum
 };
 
 
