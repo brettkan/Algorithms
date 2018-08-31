@@ -22,7 +22,20 @@ Explanation: The answer is "wke", with the length of 3.
 */
 
 function lengthOfLongestSubstring(s) {
+    const indices = {}
+    let lastRepeatedIndex = -1
+    let maxLength = 0
+
+    for (let i = 0; i < s.length; i++) {
+        if (indices.hasOwnProperty(s[i])) {
+            lastRepeatedIndex = Math.max(indices[s[i]], lastRepeatedIndex)
+        }
+
+        indices[s[i]] = i
+        maxLength = Math.max(maxLength, i - lastRepeatedIndex)
+    }
     
+    return maxLength
 }
 
 console.log(lengthOfLongestSubstring('abcabcbb')); // 3
