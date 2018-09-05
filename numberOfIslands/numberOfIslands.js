@@ -33,8 +33,64 @@ Output: 3
  * @return {number}
  */
 var numIslands = function(grid) {
-    
+    const disjointSet = populateDisjointSet(grid)
+
+    const solutionMap = new Map()
+    for (let [coord, parent] of Object.entries(disjointSet.parent)) {
+        solutionMap.set(disjointSet.find(coord), true)
+    }
+
+    return solutionMap.size
 };
+
+function populateDisjointSet(grid) {
+    const disjointSet = new DisjointSet()
+
+    for (let row = 0; row < grid.length; row++) {
+        for (let column = 0; column < grid[row].length; column++) {
+            if (grid[row][column] === '1') {
+                disjointSet.find(getStringCoord(row, column))
+
+                if (grid[row][column + 1] && grid[row][column + 1] === '1') {
+                    disjointSet.union(getStringCoord(row, column), getStringCoord(row, column + 1))
+                }
+
+                if (grid[row + 1] && grid[row + 1][column] === '1') {
+                    disjointSet.union(getStringCoord(row, column), getStringCoord(row + 1, column))
+                }
+            }
+        }
+    }
+
+    return disjointSet
+}
+
+function getStringCoord(row, column) {
+    return row.toString() + column.toString()
+}
+
+class DisjointSet {
+    constructor() {
+        this.parent = {}
+    }
+
+    find(item) {
+        if (!this.parent[item]) {
+            this.parent[item] = item
+        }
+
+        if (this.parent[item] !== item) {
+            this.parent[item] = this.find(this.parent[item])
+        }
+
+        return this.parent[item]
+    }
+
+    union(a, b) {
+        this.parent[this.find(a)] = this.find(b)
+        return true
+    }
+}
 
 /**
  * HELPERS
