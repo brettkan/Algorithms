@@ -32,7 +32,19 @@ The characters in J are distinct.
  * @return {number}
  */
 var numJewelsInStones = function(J, S) {
-    
+    let jewelCount = 0
+    const jewelDict = J.split('').reduce((aggregator, current) => {
+        aggregator[current] = true
+        return aggregator
+    }, {})
+
+    for (let i = 0; i < S.length; i++) {
+        if (jewelDict.hasOwnProperty(S[i])) {
+            jewelCount++
+        }
+    }
+
+    return jewelCount
 };
 
 /**
