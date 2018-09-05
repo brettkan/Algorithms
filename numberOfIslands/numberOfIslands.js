@@ -32,6 +32,37 @@ Output: 3
  * @param {character[][]} grid
  * @return {number}
  */
+
+var numIslands = function(grid) {
+    let count = 0
+    for (let row = 0; row < grid.length; row++) {
+        for (let column = 0; column < grid[row].length; column++) {
+            if (grid[row][column] === '1') {
+                count++
+                dfs(grid, row, column)
+            }
+        }
+    }
+
+    return count
+};
+
+function dfs(grid, row, column) {
+    if (grid[row][column] === '0') {
+        return
+    }
+
+    grid[row][column] = '0'
+    if (grid[row][column + 1]) { dfs(grid, row, column + 1) }
+    if (grid[row + 1]) { dfs(grid, row + 1, column) }
+    if (grid[row][column - 1]) { dfs(grid, row, column - 1) }
+    if (grid[row - 1]) { dfs(grid, row - 1, column) }
+}
+
+/**
+ * Disjoint Set Solution
+ **
+
 var numIslands = function(grid) {
     const disjointSet = populateDisjointSet(grid)
     return disjointSet.count
@@ -92,6 +123,8 @@ class DisjointSet {
         return true
     }
 }
+
+*/
 
 /**
  * HELPERS
