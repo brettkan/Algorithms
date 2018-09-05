@@ -34,13 +34,7 @@ Output: 3
  */
 var numIslands = function(grid) {
     const disjointSet = populateDisjointSet(grid)
-
-    const solutionMap = new Map()
-    for (let [coord, parent] of Object.entries(disjointSet.parent)) {
-        solutionMap.set(disjointSet.find(coord), true)
-    }
-
-    return solutionMap.size
+    return disjointSet.count
 };
 
 function populateDisjointSet(grid) {
@@ -72,11 +66,13 @@ function getStringCoord(row, column) {
 class DisjointSet {
     constructor() {
         this.parent = {}
+        this.count = 0
     }
 
     find(item) {
         if (!this.parent[item]) {
             this.parent[item] = item
+            this.count++
         }
 
         if (this.parent[item] !== item) {
@@ -87,7 +83,12 @@ class DisjointSet {
     }
 
     union(a, b) {
+        if (this.find(a) === this.find(b)) {
+            return false
+        }
+
         this.parent[this.find(a)] = this.find(b)
+        this.count--
         return true
     }
 }
