@@ -17,10 +17,19 @@ function inOrderTraversal(root) {
 }
 
 function preOrderTraversal(root) {
-
+    if (root) {
+        doWork(root)
+        preOrderTraversal(root.left)
+        preOrderTraversal(root.right)
+    }
 }
 
 function postOrderTraversal(root) {
+    if (root) {
+        postOrderTraversal(root.left)
+        postOrderTraversal(root.right)
+        doWork(root)
+    }
 
 }
 
