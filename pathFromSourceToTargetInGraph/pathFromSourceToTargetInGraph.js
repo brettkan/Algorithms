@@ -32,8 +32,32 @@ You can print different paths in any order, but you should keep the order of nod
  * @return {number[][]}
  */
 var allPathsSourceTarget = function(graph) {
-    
+    return dfs(0, graph.length - 1, graph)
 };
+
+function dfs(node, target, graph, history = [], seen = {}) {
+    if (node === target) {
+        return [[...history, node]]
+    }
+
+    let childSolutions = []
+
+    for (let nextNode of graph[node]) {
+        if (seen[nextNode]) {
+            continue
+        }
+
+        const nextHistory = [...history, node]
+        const nextSeen = {
+            ...seen,
+            [node]: true,
+        }
+        childSolutions = [...childSolutions, ...dfs(nextNode, target, graph, nextHistory, nextSeen)]
+    }
+
+    return childSolutions
+}
+
 
 
 /**
