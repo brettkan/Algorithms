@@ -9,7 +9,11 @@ Post order
 */
 
 function inOrderTraversal(root) {
-    
+    if (root) {
+        inOrderTraversal(root.left)
+        doWork(root)
+        inOrderTraversal(root.right)
+    }
 }
 
 function preOrderTraversal(root) {
@@ -20,8 +24,8 @@ function postOrderTraversal(root) {
 
 }
 
-function doWork(val) {
-    console.log(val)
+function doWork(node) {
+    console.log(node.val)
 }
 
 
@@ -29,7 +33,13 @@ function doWork(val) {
  * HELPERS
  **/
 
-
+ class Node {
+    constructor(val) {
+        this.val = val;
+        this.left = null;
+        this.right = null;
+    }
+ }
 
 /**
  * TEST CASES
@@ -58,6 +68,9 @@ two.left = one
 six.left = five
 six.right = seven
 
-console.log('IN ORDER TRAVERSAL:\n', inOrderTraversal(four))
-console.log('PRE ORDER TRAVERSAL:\n', preOrderTraversal(four))
-console.log('POST ORDER TRAVERSAL:\n', postOrderTraversal(four))
+console.log('IN ORDER TRAVERSAL:')
+inOrderTraversal(four)
+console.log('PRE ORDER TRAVERSAL:')
+preOrderTraversal(four)
+console.log('POST ORDER TRAVERSAL:')
+postOrderTraversal(four)
