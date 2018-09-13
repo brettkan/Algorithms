@@ -12,6 +12,11 @@ class Grid {
     constructor(size) {
         this.size = size
         this.grid = this.createEmptyGrid() // this.grid[y][x]
+
+        this.VECTOR_RIGHT = { x: 1, y: 0 }
+        this.VECTOR_LEFT = { x: -1, y: 0 }
+        this.VECTOR_UP = { x: 0, y: -1 }
+        this.VECTOR_DOWN = { x: 0, y: 1 }
     }
 
     createEmptyGrid() {
@@ -28,14 +33,31 @@ class Grid {
     }
 
     moveRight() {
-        const newGrid = this.createEmptyGrid()
+        this.moveAll(this.VECTOR_RIGHT)
+    }
 
-        for (let y = 0; y < this.grid[0].length; y++) {
-            for (let x = this.grid.length - 1; x >= 0; x--) {
-                const cellVal = this.grid[y][x]
-                const cellPos = { x, y }
+    moveLeft() {
+        this.moveAll(this.VECTOR_LEFT)
+    }
+
+    moveUp() {
+        this.moveAll(this.VECTOR_UP)
+    }
+
+    moveDown() {
+        this.moveAll(this.VECTOR_DOWN)
+    }
+
+    moveAll(vector) {
+        const newGrid = this.createEmptyGrid()
+        const traversals = this.getTraversals(vector)
+
+        for (let y = 0; y < traversals.y.length; y++) {
+            for (let x = 0; x < traversals.x.length; x++) {
+                const cellVal = this.grid[traversals.y[y]][traversals.x[x]]
+                const cellPos = { x: traversals.x[x], y: traversals.y[y] }
                 if (cellVal) {
-                    this.right(cellPos, newGrid)
+                    this.moveToUpdatedGrid(cellPos, vector, newGrid)
                 }
             }
         }
@@ -44,21 +66,22 @@ class Grid {
         return this.grid
     }
 
-    right(originalCellPos, newGrid) {
+    moveToUpdatedGrid(originalCellPos, vector, newGrid) {
         const originalVal = this.grid[originalCellPos.y][originalCellPos.x]
-        const newCellPos = { x: originalCellPos.x, y: originalCellPos.y }
 
-        while (newCellPos.x < this.size && newGrid[newCellPos.y][newCellPos.x + 1] === null) {
-            newCellPos.x++
+        let currentPos = { x: originalCellPos.x, y: originalCellPos.y }
+        let nextPos = { x: currentPos.x + vector.x, y: currentPos.y + vector.y }
+
+        while (this.isValidPosition(nextPos) && newGrid[nextPos.y][nextPos.x] === null) {
+            currentPos = nextPos
+            nextPos = { x: currentPos.x + vector.x, y: currentPos.y + vector.y }
         }
 
-        const newCellToRight = newGrid[newCellPos.y][newCellPos.x + 1]
-
-        if (newCellPos.x + 1 < this.size && newCellToRight.val === originalVal && newCellToRight.hasMerged === false) {
-            newCellToRight.val *= 2
-            newCellToRight.hasMerged = true
+        if (this.isValidPosition(nextPos) && newGrid[nextPos.y][nextPos.x].val === originalVal && newGrid[nextPos.y][nextPos.x].hasMerged === false) {
+            newGrid[nextPos.y][nextPos.x].val *= 2
+            newGrid[nextPos.y][nextPos.x].hasMerged = true
         } else {
-            newGrid[newCellPos.y][newCellPos.x] = {
+            newGrid[currentPos.y][currentPos.x] = {
                 val: originalVal,
                 hasMerged: false,
             }
@@ -67,6 +90,34 @@ class Grid {
 
     mapMergedGridToFlatGrid(newGrid) {
         return newGrid.map(row => row.map(cellObj => cellObj ? cellObj.val : null))
+    }
+
+    isValidPosition(cellPos) {
+        return cellPos.x >= 0 &&
+            cellPos.y >= 0 &&
+            cellPos.x < this.size &&
+            cellPos.y < this.size
+    }
+
+    getTraversals(vector) {
+        const traversals = {
+            x: [],
+            y: [],
+        }
+
+        for (let i = 0; i < this.size; i++) {
+            traversals.x[i] = i
+            traversals.y[i] = i
+        }
+
+        if (vector.x === 1) {
+            traversals.x = traversals.x.reverse()
+        }
+        if (vector.y === 1) {
+            traversals.y = traversals.y.reverse()
+        }
+
+        return traversals
     }
 }
 
