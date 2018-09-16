@@ -51,8 +51,39 @@ There will not be any duplicated flights or self cycles.
  * @return {number}
  */
 var findCheapestPrice = function(n, flights, src, dst, K) {
-    
+    const cheapest = findCheapest(src, dst, 0, 0, K, generateFlights(flights))
+    return cheapest === null ? -1 : cheapest
 };
+
+function generateFlights(flightsArr) {
+    return flightsArr.reduce((aggregator, [src, dst, price]) => {
+        aggregator[src] = aggregator[src] || []
+        aggregator[src].push({ dst, price })
+        return aggregator
+    }, {})
+}
+
+function findCheapest(current, dst, currentPrice, currentStops, maxStops, allFlights) {
+    let currentCheapest = null
+
+    if (current === dst) {
+        return currentPrice
+    }
+
+    if (currentStops > maxStops) {
+        return null
+    }
+
+    const flights = allFlights[current] || []
+    for (let i = 0; i < flights.length; i++) {
+        const cheapestWithPath = findCheapest(flights[i].dst, dst, flights[i].price, currentStops + 1, maxStops, allFlights)
+        if (cheapestWithPath !== null) {
+            currentCheapest = currentCheapest === null ? cheapestWithPath : Math.min(currentCheapest, cheapestWithPath)
+        }
+    }
+
+    return currentCheapest === null ? null : currentCheapest + currentPrice
+}
 
 
 /**
@@ -65,5 +96,6 @@ var findCheapestPrice = function(n, flights, src, dst, K) {
  * TEST CASES
  **/
 
+console.log(findCheapestPrice(5, [[4,1,1],[1,2,3],[0,3,2],[0,4,10],[3,1,1],[1,4,3]], 2, 1, 1), 'and the answer is ???')
 console.log(findCheapestPrice(3, [[0,1,100],[1,2,100],[0,2,500]], 0, 2, 1), 'and the answer is 200')
 console.log(findCheapestPrice(3, [[0,1,100],[1,2,100],[0,2,500]], 0, 2, 0), 'and the answer is 500')
