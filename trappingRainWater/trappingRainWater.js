@@ -19,7 +19,31 @@ Output: 6
  * @return {number}
  */
 var trap = function(height) {
-    
+    let maxLeft = height[0]
+    let maxRight = height[height.length - 1]
+
+    let leftIndex = 0
+    let rightIndex = height.length - 1
+
+    let totalVol = 0
+
+    while (leftIndex < rightIndex) {
+        let currentIndex
+        if (height[leftIndex] < height[rightIndex]) {
+            leftIndex++
+            maxLeft = Math.max(maxLeft, height[leftIndex])
+            currentIndex = leftIndex
+        } else {
+            rightIndex--
+            maxRight = Math.max(maxRight, height[rightIndex])
+            currentIndex = rightIndex
+        }
+
+        let surroundingMin = Math.min(maxLeft, maxRight)
+        totalVol += Math.max(surroundingMin, height[currentIndex]) - height[currentIndex]
+    }
+
+    return totalVol
 };
 
 
@@ -33,4 +57,5 @@ var trap = function(height) {
  * TEST CASES
  **/
 
-console.log(threeSum([0,1,0,2,1,0,1,3,2,1,2,1]), 'and the answer is 6')
+console.log(trap([2, 0, 2]), 'and the answer is 2')
+console.log(trap([0,1,0,2,1,0,1,3,2,1,2,1]), 'and the answer is 6')
