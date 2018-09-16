@@ -19,8 +19,8 @@ Output: 6
  * @return {number}
  */
 var trap = function(height) {
-    let maxLeft = height[0]
-    let maxRight = height[height.length - 1]
+    let maxLeft = 0
+    let maxRight = 0
 
     let leftIndex = 0
     let rightIndex = height.length - 1
@@ -28,19 +28,21 @@ var trap = function(height) {
     let totalVol = 0
 
     while (leftIndex < rightIndex) {
-        let currentIndex
         if (height[leftIndex] < height[rightIndex]) {
+            if (height[leftIndex] > maxLeft) {
+                maxLeft = height[leftIndex]
+            } else {
+                totalVol += maxLeft - height[leftIndex]
+            }
             leftIndex++
-            maxLeft = Math.max(maxLeft, height[leftIndex])
-            currentIndex = leftIndex
         } else {
+            if (height[rightIndex] > maxRight) {
+                maxRight = height[rightIndex]
+            } else {
+                totalVol += maxRight - height[rightIndex]
+            }
             rightIndex--
-            maxRight = Math.max(maxRight, height[rightIndex])
-            currentIndex = rightIndex
         }
-
-        let surroundingMin = Math.min(maxLeft, maxRight)
-        totalVol += Math.max(surroundingMin, height[currentIndex]) - height[currentIndex]
     }
 
     return totalVol
