@@ -18,6 +18,32 @@ Output: 6
  * @param {number[]} height
  * @return {number}
  */
+ var trap = function(height) {
+    const stack = []
+    let totalVol = 0
+
+    for (let i = 0; i < height.length; i++) {
+        while (stack.length && height[i] > height[stack[stack.length - 1]]) {
+            const prevIndex = stack.pop()
+            if (!stack.length) {
+                break
+            }
+
+            const dist = i - stack[stack.length - 1] - 1
+            const minHeight = Math.min(height[i], height[stack[stack.length - 1]])
+            totalVol += dist * (minHeight - height[prevIndex])
+        }
+
+        stack.push(i)
+    }
+
+    return totalVol
+ }
+
+/**
+ * ONE PASS SOLUTION
+ **
+
 var trap = function(height) {
     let maxLeft = 0
     let maxRight = 0
@@ -47,6 +73,8 @@ var trap = function(height) {
 
     return totalVol
 };
+
+*/
 
 
 /**
