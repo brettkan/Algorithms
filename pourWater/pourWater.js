@@ -140,8 +140,48 @@ K will be in range [0, heights.length - 1].
   * @return {number[]}
   */
  var pourWater = function(heights, V, K) {
-     
+    const updatedHeights = [...heights]
+
+    for (let i = 0; i < V; i++) {
+        const landingIndex = findLandingSpot(K, updatedHeights)
+        updatedHeights[landingIndex]++
+    }
+
+    return updatedHeights
  };
+
+ function findLandingSpot(index, heights) {
+    let currentLevel = heights[index]
+    let currentIndex = index
+
+    for (let leftIndex = index - 1; leftIndex >= 0; leftIndex--) {
+        if (heights[leftIndex] > currentLevel) {
+            break
+        }
+
+        if (heights[leftIndex] === currentLevel) {
+            continue
+        }
+
+        currentIndex = leftIndex
+        currentLevel = heights[leftIndex]
+    }
+
+    for (let rightIndex = currentIndex + 1; rightIndex < heights.length; rightIndex++) {
+        if (heights[rightIndex] > currentLevel) {
+            break
+        }
+
+        if (heights[rightIndex] === currentLevel) {
+            continue
+        }
+
+        currentIndex = rightIndex
+        currentLevel = heights[rightIndex]
+    }
+
+    return currentIndex
+ }
 
 /**
  * HELPERS
