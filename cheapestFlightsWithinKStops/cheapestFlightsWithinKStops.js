@@ -50,6 +50,29 @@ There will not be any duplicated flights or self cycles.
  * @param {number} K
  * @return {number}
  */
+
+var findCheapestPrice = function(n, flights, src, dst, K) {
+    const cheapestFlights = [{[src]: 0}, {[src]: 0}]
+
+    for (let i = 0; i <= K; i++) {
+        cheapestFlights[i + 1] = cheapestFlights[i + 1] || {}
+        for (let j = 0; j < flights.length; j++) {
+            const [curSrc, curDst, price] = flights[j]
+            debugger
+            cheapestFlights[i + 1][curDst] = cheapestFlights[i + 1][curDst] || null
+            cheapestFlights[i][curSrc] = cheapestFlights[i][curSrc] || null
+            cheapestFlights[i + 1][curDst] = cheapestFlights[i + 1][curDst] ?
+                Math.min(cheapestFlights[i + 1][curDst], cheapestFlights[i][curSrc] + price) : 
+                cheapestFlights[i][curSrc] + price
+        }
+    }
+
+    return cheapestFlights[K + 1][dst]
+}
+
+/**
+ * RECURSIVE SOLUTION
+ **
 var findCheapestPrice = function(n, flights, src, dst, K) {
     const cheapest = findCheapest(src, dst, 0, 0, K, generateFlights(flights))
     return cheapest === null ? -1 : cheapest
@@ -85,6 +108,8 @@ function findCheapest(current, dst, currentPrice, currentStops, maxStops, allFli
     return currentCheapest === null ? null : currentCheapest + currentPrice
 }
 
+*/
+
 
 /**
  * HELPERS
@@ -96,6 +121,6 @@ function findCheapest(current, dst, currentPrice, currentStops, maxStops, allFli
  * TEST CASES
  **/
 
-console.log(findCheapestPrice(5, [[4,1,1],[1,2,3],[0,3,2],[0,4,10],[3,1,1],[1,4,3]], 2, 1, 1), 'and the answer is ???')
 console.log(findCheapestPrice(3, [[0,1,100],[1,2,100],[0,2,500]], 0, 2, 1), 'and the answer is 200')
 console.log(findCheapestPrice(3, [[0,1,100],[1,2,100],[0,2,500]], 0, 2, 0), 'and the answer is 500')
+console.log(findCheapestPrice(5, [[4,1,1],[1,2,3],[0,3,2],[0,4,10],[3,1,1],[1,4,3]], 2, 1, 1), 'and the answer is ???')
