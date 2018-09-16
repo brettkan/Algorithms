@@ -31,7 +31,7 @@ var palindromePairs = function(words) {
     const pairs = []
 
     for (let i = 0; i < words.length; i++) {
-        for (let j = i; j < words.length; j++) {
+        for (let j = i + 1; j < words.length; j++) {
             if (isPalindrome(words[i] + words[j])) {
                 pairs.push([i, j])
             }
