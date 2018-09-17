@@ -23,15 +23,16 @@ Explanation: Intervals [1,4] and [4,5] are considerred overlapping.
  * @return {Interval[]}
  */
 var merge = function(intervals) {
-    for (let i = 0; i < intervals.length; i++) {
-        for (let j = i + 1; j < intervals.length; j++) {
-            const merged = getMergedInterval(intervals[i], intervals[j])
-            if (merged) {
-                intervals.splice(i, 1, merged)
-                intervals.splice(j, 1)
-                i--
-                break
-            }
+    const sortedIntervals = intervals.sort((a, b) => a.start - b.start)
+
+    for (let i = 0; i < sortedIntervals.length - 1; i++) {
+        let current = sortedIntervals[i]
+        let next = sortedIntervals [i + 1]
+
+        const merged = getMergedInterval(current, next)
+        if (merged) {
+            sortedIntervals.splice(i, 2, merged)
+            i--
         }
     }
 
@@ -79,6 +80,7 @@ function makeIntervals(arr) {
  * TEST CASES
  **/
 
+console.log(merge(makeIntervals([[1,4],[0,2],[3,5]])), 'and the answer is [[0,5]]')
 console.log(merge(makeIntervals([[1,3],[2,6],[8,10],[15,18]])), 'and the answer is [[1,6],[8,10],[15,18]]')
 console.log(merge(makeIntervals([[1,3],[14,19],[8,10],[2,6],[15,18]])), 'and the answer is [[1,6],[8,10],[14,19]]')
 console.log(merge(makeIntervals([[1,4],[4,5]])), 'and the answer is [[1,5]]')
