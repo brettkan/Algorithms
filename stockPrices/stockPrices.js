@@ -32,7 +32,16 @@ at least 1 minute has to pass.
   * @return {number[]}
   */
  var getMaxProfit = function(stockPrices) {
-    
+    let maxProfit = 0
+    let lastMin = stockPrices[0]
+
+    for (let i = 1; i < stockPrices.length; i++) {
+        const current = stockPrices[i]
+        maxProfit = Math.max(maxProfit, current - lastMin)
+        lastMin = Math.min(lastMin, current)
+    }
+
+    return maxProfit
  };
 
 /**
