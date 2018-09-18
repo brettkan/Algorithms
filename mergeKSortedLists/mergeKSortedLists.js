@@ -19,61 +19,121 @@ Output: 1->1->2->3->4->4->5->6
  * @param {ListNode[]} lists
  * @return {ListNode}
  */
+var mergeKLists = function(lists) {
+    for (let i = 0; i < lists.length; i++) {
+        if (lists[i] === null || lists[i].val === null) {
+            lists.splice(i, 1)
+            i--
+        }
+    }
 
- var mergeKLists = function(lists) {
-     let solutionList = new LinkedList()
+    if (!lists || lists.length === 0) {
+        return null
+    }
 
-     for (let k = 0; k < lists.length; k++) {
-         if (!lists[k]) {
-             lists.splice(k, 1)
-             k--
-         }
-     }
+    while (lists.length > 1) {
+        lists.push(mergeTwoLists(lists.shift(), lists.shift()))
+    }
 
-     while (lists.length) {
-         let currentMin = Infinity
-         let minIndex
-         for (let i = 0; i < lists.length; i++) {
-             let current = lists[i]
+    return lists[0]
+}
 
-             if (current.val < currentMin) {
-                 currentMin = current.val
-                 minIndex = i
-             }
-         }
+function mergeTwoLists(listA, listB) {
+    let linkedList = new LinkedList()
+    let nodeA = listA
+    let nodeB = listB
 
-         const minHead = lists[minIndex]
-         const minHeadNext = minHead.next
-         minHead.next = null
-         solutionList.addNode(minHead)
+    while (nodeA || nodeB) {
+        if (!nodeB || (nodeA && nodeA.val < nodeB.val)) {
+            linkedList.addNode(nodeA.val)
+            nodeA = nodeA.next
+        } else {
+            linkedList.addNode(nodeB.val)
+            nodeB = nodeB.next
+        }
+    }
 
-         if (minHeadNext) {
-             lists[minIndex] = minHeadNext
-         } else {
-             lists.splice(minIndex, 1)
-         }
-     }
+    return linkedList.head
+}
 
-     return solutionList.head
- }
+class LinkedList {
+    constructor() {
+        this.head = null
+        this.tail = null
+    }
 
- class LinkedList {
-     constructor() {
-         this.head = null
-         this.tail = null
-     }
+    addNode(val) {
+        const node = new ListNode(val)
+        if (this.head === null && this.tail === null) {
+            this.head = node
+            this.tail = node
+            return this.head
+        }
 
-     addNode(node) {
-         if (this.head === null && this.tail === null) {
-             this.head = node
-             this.tail = node
-             return this.head
-         }
+        this.tail.next = node
+        this.tail = this.tail.next
+    }
+}
 
-         this.tail.next = node
-         this.tail = this.tail.next
-     }
- }
+/**
+ * SECOND SOLUTION
+ **
+var mergeKLists = function(lists) {
+    let solutionList = new LinkedList()
+
+    for (let k = 0; k < lists.length; k++) {
+        if (!lists[k]) {
+            lists.splice(k, 1)
+            k--
+        }
+    }
+
+    while (lists.length) {
+        let currentMin = Infinity
+        let minIndex
+        for (let i = 0; i < lists.length; i++) {
+            let current = lists[i]
+
+            if (current.val < currentMin) {
+                currentMin = current.val
+                minIndex = i
+            }
+        }
+
+        const minHead = lists[minIndex]
+        const minHeadNext = minHead.next
+        minHead.next = null
+        solutionList.addNode(minHead)
+
+        if (minHeadNext) {
+            lists[minIndex] = minHeadNext
+        } else {
+            lists.splice(minIndex, 1)
+        }
+    }
+
+    return solutionList.head
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null
+        this.tail = null
+    }
+
+    addNode(node) {
+        if (this.head === null && this.tail === null) {
+            this.head = node
+            this.tail = node
+            return this.head
+        }
+
+        this.tail.next = node
+        this.tail = this.tail.next
+    }
+}
+
+*/
 
 /**
  * BRUTE FORCE SOLUTION
@@ -119,25 +179,30 @@ function ListNode(val) {
     this.next = null;
 }
 
+function createListFromArray(arr) {
+    const linkedList = new LinkedList()
+
+    for (let i = 0; i < arr.length; i++) {
+        linkedList.addNode(arr[i])
+    }
+
+    return linkedList.head
+}
+
 /**
  * TEST CASES
  **/
 
-const a = new ListNode(1)
-const b = new ListNode(4)
-const c = new ListNode(5)
-a.next = b
-b.next = c
+const testCases = [
+    [[0,2,5]],
+    [[1,4,5], [1,3,4], [2,6]],
+    [[1,2,3], [4,5,6,7]],
+]
 
-const d = new ListNode(1)
-const e = new ListNode(3)
-const f = new ListNode(4)
-d.next = e
-e.next = f
+testCases.forEach(test => {
+    const cases = test.map(createListFromArray)
+    console.log(mergeKLists(cases))
+})
 
-const g = new ListNode(2)
-const h = new ListNode(6)
-g.next = h
 
-const args1 = [a, d, g]
-console.log(mergeKLists(args1))
+
