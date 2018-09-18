@@ -20,8 +20,34 @@ Output: 1->1->2->3->4->4->5->6
  * @return {ListNode}
  */
 var mergeKLists = function(lists) {
-    
+    const sortArray = []
+
+    for (let i = 0; i < lists.length; i++) {
+        let node = lists[i]
+        while (node) {
+            sortArray.push(node.val)
+            node = node.next
+        }
+    }
+
+    return createLinkedListFromArray(sortArray.sort((a, b) => a - b))
 };
+
+function createLinkedListFromArray(arr) {
+    let node = new ListNode(arr[0])
+    const headNode = node
+
+    if (!arr.length) {
+        return null
+    }
+
+    for (let i = 1; i < arr.length; i++) {
+        node.next = new ListNode(arr[i])
+        node = node.next
+    }
+
+    return headNode
+}
 
 /**
  * HELPERS
