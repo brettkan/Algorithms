@@ -19,6 +19,65 @@ Output: 1->1->2->3->4->4->5->6
  * @param {ListNode[]} lists
  * @return {ListNode}
  */
+
+ var mergeKLists = function(lists) {
+     let solutionList = new LinkedList()
+
+     for (let k = 0; k < lists.length; k++) {
+         if (!lists[k]) {
+             lists.splice(k, 1)
+             k--
+         }
+     }
+
+     while (lists.length) {
+         let currentMin = Infinity
+         let minIndex
+         for (let i = 0; i < lists.length; i++) {
+             let current = lists[i]
+
+             if (current.val < currentMin) {
+                 currentMin = current.val
+                 minIndex = i
+             }
+         }
+
+         const minHead = lists[minIndex]
+         const minHeadNext = minHead.next
+         minHead.next = null
+         solutionList.addNode(minHead)
+
+         if (minHeadNext) {
+             lists[minIndex] = minHeadNext
+         } else {
+             lists.splice(minIndex, 1)
+         }
+     }
+
+     return solutionList.head
+ }
+
+ class LinkedList {
+     constructor() {
+         this.head = null
+         this.tail = null
+     }
+
+     addNode(node) {
+         if (this.head === null && this.tail === null) {
+             this.head = node
+             this.tail = node
+             return this.head
+         }
+
+         this.tail.next = node
+         this.tail = this.tail.next
+     }
+ }
+
+/**
+ * BRUTE FORCE SOLUTION
+ **
 var mergeKLists = function(lists) {
     const sortArray = []
 
@@ -48,6 +107,8 @@ function createLinkedListFromArray(arr) {
 
     return headNode
 }
+
+*/
 
 /**
  * HELPERS
