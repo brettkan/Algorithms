@@ -58,9 +58,27 @@ Output: false
  * @param {string} p
  * @return {boolean}
  */
-var isMatch = function(s, p) {
-    
+var isMatch = function(str, pattern) {
+    if (!pattern) {
+        return !str
+    }
+
+    const firstMatch = str && (pattern[0] === str[0] || isNextWildcard(pattern[0]))
+
+    if (isNextRepeatingCharacter(pattern)) {
+        return isMatch(str, pattern.slice(2)) || (firstMatch && isMatch(str.slice(1), pattern))
+    } else {
+        return firstMatch && isMatch(str.slice(1), pattern.slice(1))
+    }
 };
+
+function isNextWildcard(s) {
+    return s[0] === '.'
+}
+
+function isNextRepeatingCharacter(s) {
+    return s[1] === '*'
+}
 
 /**
  * HELPERS
