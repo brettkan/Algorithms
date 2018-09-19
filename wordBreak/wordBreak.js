@@ -35,7 +35,26 @@ Output: false
  * @return {boolean}
  */
 var wordBreak = function(s, wordDict) {
-    
+    const memo = {}
+    function backtrack (str, start) {
+        if (start === str.length) {
+            return true
+        }
+
+        if (memo[start]) {
+            return memo[start]
+        }
+
+        for (let end = start + 1; end <= str.length; end++) {
+            if (wordDict.includes(str.slice(start, end)) && backtrack(str, end)) {
+                return memo[str] = true
+            }
+        }
+
+        return memo[str] = false
+    }
+
+    return backtrack(s, 0)
 };
 
 /**
@@ -51,6 +70,7 @@ var wordBreak = function(s, wordDict) {
 console.log(wordBreak('leetcode', ["leet", "code"]), 'and output should be true')
 console.log(wordBreak('applepenapple', ["apple", "pen"]), 'and output should be true')
 console.log(wordBreak('catsandog', ["cats", "dog", "sand", "and", "cat"]), 'and output should be false')
+console.log(wordBreak('catsandog', ["cats", "dog", "sand", "and", "cat", "an"]), 'and output should be true')
 
 
 
