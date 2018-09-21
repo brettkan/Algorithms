@@ -24,8 +24,29 @@ The order of your output does not matter.
  * @return {string[][]}
  */
 var groupAnagrams = function(strs) {
-    
+    const groupedAnagrams = {}
+
+    for (let i = 0; i < strs.length; i++) {
+        const curStr = strs[i]
+        const letterMap = getLetterMap(curStr)
+        groupedAnagrams[letterMap] = groupedAnagrams[letterMap] || []
+        groupedAnagrams[letterMap].push(curStr)
+    }
+
+    return Object.values(groupedAnagrams)
 };
+
+function getLetterMap(str) {
+    let letterMap = []
+
+    for (let i = 0; i < str.length; i++) {
+        let letterMapIndex = str.charCodeAt(i) - 97
+        letterMap[letterMapIndex] = letterMap[letterMapIndex] || 0
+        letterMap[letterMapIndex]++
+    }
+
+    return letterMap.join(',')
+}
 
 /**
  * HELPERS
