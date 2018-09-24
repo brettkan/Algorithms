@@ -21,7 +21,35 @@ Output: 1
  * @return {number}
  */
 var minMeetingRooms = function(intervals) {
-    
+    // Get sorted list of starts and ends
+    const starts = []
+    const ends = []
+
+    for (let interval of intervals) {
+        starts.push(interval.start)
+        ends.push(interval.end)
+    }
+
+    starts.sort((a, b) => a - b)
+    ends.sort((a, b) => a - b)
+
+    // get max simultaneous meetings
+    let currentMeetings = 0
+    let maxMeetings = 0
+    while (starts.length) {
+        // next event is a meeting start
+        if (starts[0] < ends[0]) {
+            currentMeetings++
+            starts.shift()
+            maxMeetings = Math.max(currentMeetings, maxMeetings)
+        } else {
+            // next event is a meeting end
+            currentMeetings--
+            ends.shift()
+        }
+    }
+
+    return maxMeetings
 };
 
 
@@ -35,7 +63,7 @@ function Interval(start, end) {
 }
 
 function createIntervals(arr) {
-    return arr.map([start, end] => new Interval(start, end))
+    return arr.map(([start, end]) => new Interval(start, end))
 }
 
 
