@@ -43,7 +43,38 @@ The given array will be in the range [1, 20000].
  * @return {number}
  */
 var kEmptySlots = function(flowers, k) {
-    
+    for (let i = 0; i < flowers.length; i++) {
+        const currentFlowerPos = flowers[i]
+        let foundLower = false
+        let foundLowerBlocker = false
+        let foundHigher = false
+        let foundHigherBlocker = false
+
+        for (let j = 0; j < i; j++) {
+            const prevFlowerPos = flowers[j]
+            const distance = Math.abs(currentFlowerPos - prevFlowerPos)
+
+            if (distance <= k) {
+                if (prevFlowerPos > currentFlowerPos) {
+                    foundHigherBlocker = true
+                } else {
+                    foundLowerBlocker = true
+                }
+            } else if (distance === k + 1) {
+                if (prevFlowerPos > currentFlowerPos) {
+                    foundHigher = true
+                } else {
+                    foundLower = true
+                }
+            }
+        }
+
+        if ((foundHigher && !foundHigherBlocker) || (foundLower && !foundLowerBlocker)) {
+            return i + 1
+        }
+    }
+
+    return -1
 };
 
 /**
@@ -56,6 +87,7 @@ var kEmptySlots = function(flowers, k) {
  * TEST CASES
  **/
 
+console.log(kEmptySlots([6,5,8,9,7,1,10,2,3,4], 2), 'and output should be 8')
 console.log(kEmptySlots([1,3,2], 1), 'and output should be 2')
 console.log(kEmptySlots([1,2,3], 1), 'and output should be -1')
 
