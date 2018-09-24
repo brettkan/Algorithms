@@ -43,6 +43,46 @@ The given array will be in the range [1, 20000].
  * @return {number}
  */
 var kEmptySlots = function(flowers, k) {
+    const days = getDays(flowers)
+    let left = 0
+    let right
+    let ans = Infinity
+
+    while (left < days.length - 1 - k) {
+        right = left + k + 1
+        let isValidInterval = true
+
+        for (let i = left + 1; i < right; i++) {
+            if (days[i] < days[left] || days[i] < days[right]) {
+                left = i
+                isValidInterval = false
+                break
+            }
+        }
+
+        if (isValidInterval) {
+            const dayValid = Math.max(days[left], days[right])
+            ans = Math.min(dayValid, ans)
+            left = right
+        }
+    }
+
+    return ans === Infinity ? -1 : ans
+}
+
+function getDays(flowers) {
+    const days = []
+    for (let i = 0; i < flowers.length; i++) {
+        days[flowers[i] - 1] = i + 1
+    }
+
+    return days
+}
+
+/**
+ * BRUTE FORCE APPROACH
+ **
+var kEmptySlots = function(flowers, k) {
     for (let i = 0; i < flowers.length; i++) {
         const currentFlowerPos = flowers[i]
         let foundLower = false
@@ -77,6 +117,8 @@ var kEmptySlots = function(flowers, k) {
     return -1
 };
 
+*/
+
 /**
  * HELPERS
  **/
@@ -87,6 +129,7 @@ var kEmptySlots = function(flowers, k) {
  * TEST CASES
  **/
 
+console.log(kEmptySlots([3,9,2,8,1,6,10,5,4,7], 1), 'and output should be 6')
 console.log(kEmptySlots([6,5,8,9,7,1,10,2,3,4], 2), 'and output should be 8')
 console.log(kEmptySlots([1,3,2], 1), 'and output should be 2')
 console.log(kEmptySlots([1,2,3], 1), 'and output should be -1')
